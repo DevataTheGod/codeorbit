@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Tags -->
+  <title>CodeOrbit | Learn to Code with AI</title>
+  <meta name="title" content="CodeOrbit | Learn to Code with AI" />
+  <meta name="description"
+    content="Stay in orbit. Master the code. CodeOrbit is a guided co-building platform powered by Orbit AI — where you write every line and learn real skills." />
+  <meta name="author" content="CodeOrbit" />
+  <meta name="theme-color" content="#0a0a0b" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://codeorbit.dev/" />
+  <meta property="og:title" content="CodeOrbit | Learn to Code with AI" />
+  <meta property="og:description" content="Stay in orbit. Master the code. CodeOrbit is a guided co-building platform powered by Orbit AI where you write every line and gain real skills." />
+  <meta property="og:image" content="/favicon.ico?v=1" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://codeorbit.dev/" />
+  <meta property="twitter:title" content="CodeOrbit | Learn to Code with AI" />
+  <meta property="twitter:description" content="Stay in orbit. Master the code. CodeOrbit is a guided co-building platform powered by Orbit AI where you write every line and gain real skills." />
+  <meta property="twitter:image" content="/favicon.ico?v=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #0a0a0b;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    #root:empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #root:empty::after {
+      content: "";
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(166, 255, 230, 0.1);
+      border-top-color: #00ffc8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <noscript>
+    <div style="text-align: center; padding: 50px; color: white; font-family: sans-serif;">
+      <h1>JavaScript Required</h1>
+      <p>Please enable JavaScript to view the CodeOrbit platform.</p>
+    </div>
+  </noscript>
+</body>
+
+</html>

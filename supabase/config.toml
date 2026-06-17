@@ -1,0 +1,8 @@
+project_id = "bckbynydehipoidngdxt"
+
+[functions.bodhit-chat]
+verify_jwt = false
+
+[functions.generate-milestones]
+verify_jwt = false
+
