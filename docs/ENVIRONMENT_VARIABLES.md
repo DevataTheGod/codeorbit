@@ -1,39 +1,44 @@
 # ⚙️ CodeOrbit — Environment Variables
 
-This document defines all environment variables required to run the frontend client, backend Express server, and Supabase Edge Functions.
+All variables are defined in `.env` at the project root. Copy the template with:
+```bash
+cp config/.env.example .env
+```
 
 ---
 
-## 1. Frontend Client Configuration (`.env`)
-
-Variables prefixed with `VITE_` are exposed to the client application code.
+## Frontend (Vite) — `VITE_*` prefix
 
 | Variable | Required | Description | Example |
 |---|---|---|---|
-| `VITE_SUPABASE_URL` | Yes | Endpoint URL of the Supabase project | `https://xyz.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | Yes | Client anonymous access API key | `eyJhbGciOiJIUzI1Ni...` |
-| `VITE_OTP_SERVER_URL` | Yes | Local or hosted URL of the Express server | `http://localhost:8787` |
-| `VITE_OTP_SERVER_API_KEY` | Yes | Shared API key to authorize mail requests | `super-secret-key-123` |
+| `VITE_SUPABASE_URL` | ✅ | Supabase project endpoint | `https://xyz.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | ✅ | Supabase anonymous/public API key | `eyJhbGciOiJIUzI1Ni...` |
+| `VITE_OTP_SERVER_URL` | ✅ | URL of the Express OTP server | `http://localhost:8787` |
+| `VITE_OTP_SERVER_API_KEY` | ⬜ | Shared secret for OTP server auth header | `super-secret-123` |
+
+> Find `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in **Supabase Dashboard → Settings → API**.
 
 ---
 
-## 2. Express OTP Backend Configuration (`.env`)
-
-Variables read by the Node.js process. Do not commit these values to source control.
+## Backend Express Server — server-side only
 
 | Variable | Required | Description | Example |
 |---|---|---|---|
-| `PORT` | No | Port for the Express server (default: `8787`) | `8787` |
-| `FRONTEND_ORIGIN` | Yes | URL of client app allowed by CORS policies | `http://localhost:8080` |
-| `RESEND_API_KEY` | Yes | API token for Resend transactional mailer | `re_123456789...` |
-| `OTP_SERVER_API_KEY` | Yes | Shared API key to authenticate incoming client calls | `super-secret-key-123` |
+| `PORT` | ⬜ | Server port (default: `8787`) | `8787` |
+| `FRONTEND_ORIGIN` | ✅ | CORS-allowed frontend origin | `http://localhost:8080` |
+| `RESEND_API_KEY` | ✅ | Resend transactional email API key | `re_123456789...` |
+| `OTP_FROM_EMAIL` | ✅ | Verified sender email address | `onboarding@resend.dev` |
+| `OTP_SERVER_API_KEY` | ⬜ | Shared key to authenticate client OTP requests | `super-secret-123` |
 
 ---
 
-## 3. Supabase Edge Functions Secrets
+## Supabase Edge Function Secrets
 
-Keys configured inside the Supabase cloud dashboard or link terminal.
+Set via CLI — never in `.env`:
+```bash
+supabase secrets set GEMINI_API_KEY="AIzaSy..." --project-ref <YOUR_PROJECT_REF>
+```
 
-| Variable | Required | Description | Example |
-|---|---|---|---|
-| `GEMINI_API_KEY` | Yes | API key to access Google Gemini LLM | `AIzaSyCsD4...` |
+| Variable | Description |
+|---|---|
+| `GEMINI_API_KEY` | Google Gemini API key for Orbit AI chat and milestone generation |

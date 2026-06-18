@@ -2,235 +2,148 @@
 
 > **"Stay in orbit. Master the code."**
 
-CodeOrbit is an enterprise-grade, project-based educational SaaS platform. It combines a learning management dashboard, Socratic AI mentorship, and an in-browser IDE with Monaco Editor to deliver a guided learning environment. The platform ensures students write code themselves using plagiarism-detection telemetry and oral verification quiz modules.
+CodeOrbit is an enterprise-grade, project-based educational SaaS platform. It combines a learning management dashboard, Socratic AI mentorship (Orbit), and an in-browser VS Code-like IDE to ensure students write every line of code themselves.
 
 ---
 
-## 📖 Table of Contents
+## ✨ Core Features
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Folder Structure](#folder-structure)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
-- [Database Setup](#database-setup)
-- [Local Development](#local-development)
-  - [Running Frontend](#running-frontend)
-  - [Running Backend](#running-backend)
-  - [Running Edge Functions](#running-edge-functions)
-- [Deployment](#deployment)
-- [CI/CD](#cicd)
-- [User Roles](#user-roles)
-- [API Overview](#api-overview)
-- [Database Overview](#database-overview)
-- [Documentation Index](#documentation-index)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## 🔍 Overview
-
-In online software education, students often fall into **Tutorial Hell** (passively watching video lessons without coding) or **AI Copypasta** (asking chatbots to generate code, then copy-pasting it without learning). 
-
-CodeOrbit breaks this cycle by combining structured milestones, Socratic guidance (where the AI chatbot, Orbit, asks questions rather than giving code), typing interval telemetry, and oral explanation defense modals.
-
----
-
-## ✨ Features
-
-- **VS Code-Style Browser IDE:** Multi-tab file explorer tree, editor, terminal, breadcrumbs, status bar, and search.
-- **Socratic AI Mentor (Orbit):** Integrated side-panel assistant that guides code development without generating solutions.
-- **Cheat Detection Telemetry:** Monitors typing intervals and copy-paste events. Large pasted blocks flag the student.
-- **Oral Verification (Proof-of-Work):** Suspicious submissions trigger a code defense quiz modal. Orbit AI prompts the student to explain pasted lines.
-- **Intake Generator:** Auto-generates customized milestones and tasks based on project stack and skill levels.
-- **Mentor Reports:** Generates structured progress logs, strengths, weaknesses, and flags for review by human mentors.
-
----
-
-## 🏗️ Architecture
-
-CodeOrbit uses a React single-page application on the frontend, Supabase PostgreSQL on the database layer, Deno Edge Functions for LLM orchestration, and a Node/Express OTP delivery server.
-
-For a detailed breakdown, see the [System Architecture Document](file:///home/dev/Desktop/projects/Project-Skill/docs/ARCHITECTURE.md).
+| Feature | Description |
+|---|---|
+| **Browser IDE** | Monaco Editor with file tree, tabs, terminal, breadcrumbs, and status bar |
+| **Orbit AI (Socratic)** | Side-panel AI that asks questions, never writes code |
+| **Cheat Detection** | Paste event monitoring and keystroke telemetry |
+| **Proof-of-Work Quiz** | Oral code defense modal triggered by suspicious paste activity |
+| **AI Milestone Generator** | Gemini auto-generates a project roadmap from a student's intake form |
+| **Mentor Reports** | AI-generated progress summaries for human mentor review |
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS, Monaco Editor (`@monaco-editor/react`), Lucide React.
-- **Backend:** Node.js, Express, tsx.
-- **Database + Auth:** Supabase (PostgreSQL, JWT, Row-Level Security).
-- **Edge Runtimes:** Supabase Deno Edge Functions.
-- **AI Integration:** Google Gemini-2.5-Flash.
-- **Transactional Mailer:** Resend.
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 + TypeScript + Vite 5 + Tailwind CSS + shadcn/ui |
+| Editor | Monaco Editor (`@monaco-editor/react`) |
+| Auth + DB | Supabase (PostgreSQL + JWT + Row-Level Security) |
+| Edge Functions | Supabase Deno (Gemini-2.5-Flash) |
+| Backend | Node.js / Express (OTP micro-server) |
+| Email | Resend |
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```
-project-root/
-├── docs/                               # Consolidated Documentation Hub
-│   ├── api/                            # REST & Edge Function APIs references
-│   ├── database/                       # DB relationships, ERD, and setups
-│   └── development/                    # Onboarding, workflows, and guidelines
-├── database/                           # PostgreSQL Database Resources
-│   ├── schema/                         # Schema declarations (.sql)
-│   ├── migrations/                     # Supabase DB migrations
-│   └── setup/                          # Triggers and sync helpers
-├── frontend/                           # React Frontend Application Workspace
-├── backend/                            # Express OTP Microservice Server
-├── functions/                          # Supabase Deno Edge Functions
-├── scripts/                            # Deployments & automation shell scripts
-├── tests/                              # Integration chat simulator tests
-├── config/                             # Env templates and configs
-└── archive/                            # Deprecated/archived documentation
+Project-Skill/
+├── frontend/                   # React SPA (Vite)
+│   └── src/
+│       ├── pages/              # Route-level page components
+│       ├── components/ide/     # VS Code-like IDE components
+│       ├── hooks/              # Auth, telemetry, file system hooks
+│       └── services/           # Supabase, GitHub, OTP, VFS services
+├── backend/                    # Express OTP microservice
+├── functions/                  # Supabase Deno Edge Functions
+│   ├── bodhit-chat/            # Orbit AI Socratic chat
+│   └── generate-milestones/    # AI roadmap generator
+├── database/
+│   ├── schema/                 # Full PostgreSQL schema
+│   ├── migrations/             # Supabase migration history
+│   └── setup/                  # Trigger scripts and patch helpers
+├── docs/                       # Developer documentation
+├── scripts/                    # Deployment shell scripts
+├── tests/                      # Chatbot simulation tests
+└── config/                     # Env templates
 ```
-
-For a full breakdown of the layout, see [REPOSITORY_RESTRUCTURE.md](file:///home/dev/Desktop/projects/Project-Skill/REPOSITORY_RESTRUCTURE.md).
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Quick Start
 
-Install all node dependencies inside the project root:
+### 1. Install dependencies
 ```bash
 npm install
 ```
 
----
-
-## 🔑 Environment Variables
-
-Copy the template file to set up environment variables:
+### 2. Set environment variables
 ```bash
 cp config/.env.example .env
+# Fill in values — see docs/ENVIRONMENT_VARIABLES.md
 ```
-For variable descriptions and values, see [ENVIRONMENT_VARIABLES.md](file:///home/dev/Desktop/projects/Project-Skill/docs/ENVIRONMENT_VARIABLES.md).
 
----
+### 3. Set up the database
+Run in Supabase SQL Editor (in order):
+1. `database/schema/COMPLETE_DATABASE_SCHEMA.sql`
+2. `database/setup/CREATE_USER_TRIGGER.sql`
 
-## 🗄️ Database Setup
+See [DATABASE_SETUP_GUIDE.md](database/DATABASE_SETUP_GUIDE.md) for details.
 
-To provision your Supabase PostgreSQL database:
-1. Open the SQL editor in your Supabase project dashboard.
-2. Execute the database initialization script: [COMPLETE_DATABASE_SCHEMA.sql](file:///home/dev/Desktop/projects/Project-Skill/database/schema/COMPLETE_DATABASE_SCHEMA.sql).
-3. Execute the automated profile sync trigger script: [CREATE_USER_TRIGGER.sql](file:///home/dev/Desktop/projects/Project-Skill/database/setup/CREATE_USER_TRIGGER.sql).
-
-See [DATABASE_SETUP_GUIDE.md](file:///home/dev/Desktop/projects/Project-Skill/database/DATABASE_SETUP_GUIDE.md) for more details.
-
----
-
-## 💻 Local Development
-
-For complete local instructions, see [LOCAL_DEVELOPMENT.md](file:///home/dev/Desktop/projects/Project-Skill/docs/LOCAL_DEVELOPMENT.md).
-
-### Running Frontend
+### 4. Run locally (two terminals)
 ```bash
-npm run dev
-```
-- Local URL: `http://localhost:8080`
-
-### Running Backend
-```bash
-npm run otp-server
-```
-- Local URL: `http://localhost:8787`
-
-### Running Edge Functions
-Start local Supabase services:
-```bash
-supabase start
-```
-
----
-
-## 🚀 Deployment
-
-We host the client on Vercel/Netlify, the Express server on Render/Fly.io, and the database/edge functions on Supabase.
-See [DEPLOYMENT_GUIDE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/DEPLOYMENT_GUIDE.md) for detailed deployment steps, and use the [Production Deployment Checklist](file:///home/dev/Desktop/projects/Project-Skill/DEPLOYMENT_CHECKLIST.md) before promoting builds.
-
----
-
-## 🔄 CI/CD
-
-Vite builds are integrated with webhooks triggered on git pushes. Supabase Edge Functions can be deployed automatically using GitHub actions:
-```yaml
-- name: Deploy Edge Function
-  run: supabase functions deploy bodhit-chat --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+npm run dev          # Frontend → http://localhost:8080
+npm run otp-server   # Express OTP server → http://localhost:8787
 ```
 
 ---
 
 ## 👥 User Roles
 
-- **Student:** Intake configuration, milestone task completion, VFS coding, and AI assessments.
-- **Mentor:** Assigned student list reviews, AI report grading, and student support.
-- **Admin:** Permissions role assignments and platform usage analytics.
+| Role | Capabilities |
+|---|---|
+| **Student** | Submit project → Get AI roadmap → Code in IDE → AI assessment |
+| **Mentor** | Review students, grade AI reports, respond to help flags |
+| **Admin** | Manage roles, view platform analytics |
 
 ---
 
-## 🔌 API Overview
+## 🔌 API Reference
 
-- **`GET /`**: Server diagnostics ping.
-- **`POST /send-otp`**: Delivery endpoint formatting and mailing OTP pins.
-- **`POST /functions/v1/bodhit-chat`**: Orbit AI Socratic chat logic wrapper.
-- **`POST /functions/v1/generate-milestones`**: Generates project roadmap milestones and tasks.
+| Endpoint | Service | Description |
+|---|---|---|
+| `GET /` | Express | Health check |
+| `POST /send-otp` | Express | OTP delivery via Resend |
+| `POST /functions/v1/bodhit-chat` | Deno | Orbit AI Socratic chat |
+| `POST /functions/v1/generate-milestones` | Deno | AI roadmap generation |
 
-Review the [REST API Reference](file:///home/dev/Desktop/projects/Project-Skill/docs/api/API_REFERENCE.md) and [Edge Function Reference](file:///home/dev/Desktop/projects/Project-Skill/docs/api/EDGE_FUNCTION_REFERENCE.md).
-
----
-
-## 🗄️ Database Overview
-
-CodeOrbit runs on PostgreSQL:
-- **`profiles` / `user_roles`**: User roles and metadata.
-- **`project_submissions` / `milestones` / `tasks`**: Active roadmap tracks.
-- **`conversations` / `messages`**: Chat history.
-- **`mentor_reports` / `mentor_reviews`**: AI evaluation summaries.
-
-Review [DATABASE_ARCHITECTURE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/DATABASE_ARCHITECTURE.md) and the [Database Schema Map](file:///home/dev/Desktop/projects/Project-Skill/database/README.md).
+See [docs/api/API_REFERENCE.md](docs/api/API_REFERENCE.md) for full schemas.
 
 ---
 
 ## 📚 Documentation Index
 
-All technical and architectural guides have been consolidated inside the `docs/` and `database/` folders:
-
-- **Overview:** [docs/PROJECT_OVERVIEW.md](file:///home/dev/Desktop/projects/Project-Skill/docs/PROJECT_OVERVIEW.md)
-- **Technical Architecture:** [docs/ARCHITECTURE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/ARCHITECTURE.md)
-- **Database Architecture:** [docs/DATABASE_ARCHITECTURE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/DATABASE_ARCHITECTURE.md)
-- **Database Setup Guide:** [database/DATABASE_SETUP_GUIDE.md](file:///home/dev/Desktop/projects/Project-Skill/database/DATABASE_SETUP_GUIDE.md)
-- **Database Files Map:** [database/README.md](file:///home/dev/Desktop/projects/Project-Skill/database/README.md)
-- **REST API Reference:** [docs/api/API_REFERENCE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/api/API_REFERENCE.md)
-- **Edge Functions Reference:** [docs/api/EDGE_FUNCTION_REFERENCE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/api/EDGE_FUNCTION_REFERENCE.md)
-- **Authentication Flows:** [docs/AUTHENTICATION.md](file:///home/dev/Desktop/projects/Project-Skill/docs/AUTHENTICATION.md)
-- **Feature Walkthroughs:** [docs/FEATURE_DOCUMENTATION.md](file:///home/dev/Desktop/projects/Project-Skill/docs/FEATURE_DOCUMENTATION.md)
-- **Local Onboarding:** [docs/LOCAL_DEVELOPMENT.md](file:///home/dev/Desktop/projects/Project-Skill/docs/LOCAL_DEVELOPMENT.md)
-- **Environment Variables:** [docs/ENVIRONMENT_VARIABLES.md](file:///home/dev/Desktop/projects/Project-Skill/docs/ENVIRONMENT_VARIABLES.md)
-- **Deployment Guide:** [docs/DEPLOYMENT_GUIDE.md](file:///home/dev/Desktop/projects/Project-Skill/docs/DEPLOYMENT_GUIDE.md)
-- **Deployment Checklist:** [DEPLOYMENT_CHECKLIST.md](file:///home/dev/Desktop/projects/Project-Skill/DEPLOYMENT_CHECKLIST.md)
-- **Security Protocols:** [docs/SECURITY.md](file:///home/dev/Desktop/projects/Project-Skill/docs/SECURITY.md)
-- **Troubleshooting FAQ:** [docs/TROUBLESHOOTING.md](file:///home/dev/Desktop/projects/Project-Skill/docs/TROUBLESHOOTING.md)
+| Document | Location |
+|---|---|
+| System Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| Database Architecture | [docs/DATABASE_ARCHITECTURE.md](docs/DATABASE_ARCHITECTURE.md) |
+| Database Setup | [database/DATABASE_SETUP_GUIDE.md](database/DATABASE_SETUP_GUIDE.md) |
+| Environment Variables | [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) |
+| Authentication Flows | [docs/AUTHENTICATION.md](docs/AUTHENTICATION.md) |
+| Feature Walkthroughs | [docs/FEATURE_DOCUMENTATION.md](docs/FEATURE_DOCUMENTATION.md) |
+| Local Development | [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) |
+| Deployment Guide | [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) |
+| Security | [docs/SECURITY.md](docs/SECURITY.md) |
+| Troubleshooting | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) |
+| OTP & Google Auth | [docs/integrations/GOOGLE_AUTH_OTP_SETUP.md](docs/integrations/GOOGLE_AUTH_OTP_SETUP.md) |
+| Conversation Persistence | [docs/development/CONVERSATION_PERSISTENCE_GUIDE.md](docs/development/CONVERSATION_PERSISTENCE_GUIDE.md) |
+| REST API Reference | [docs/api/API_REFERENCE.md](docs/api/API_REFERENCE.md) |
+| Edge Function Reference | [docs/api/EDGE_FUNCTION_REFERENCE.md](docs/api/EDGE_FUNCTION_REFERENCE.md) |
 
 ---
 
-## 🔧 Troubleshooting
+## 🚀 Deployment
 
-For common build errors, CORS origin policies mismatches, or database synchronizations errors, check our [Troubleshooting Guide](file:///home/dev/Desktop/projects/Project-Skill/docs/TROUBLESHOOTING.md).
+Host the frontend on **Vercel/Netlify**, the Express server on **Render/Fly.io**, and the database/Edge Functions on **Supabase**.
+
+See [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for step-by-step instructions.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please check the guidelines in [CONTRIBUTING.md](file:///home/dev/Desktop/projects/Project-Skill/CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for coding guidelines and branch conventions.
 
 ---
 
 ## 📄 License
 
-CodeOrbit is licensed under the MIT License. See [LICENSE](file:///home/dev/Desktop/projects/Project-Skill/LICENSE) for more details.
+MIT — see [LICENSE](LICENSE).

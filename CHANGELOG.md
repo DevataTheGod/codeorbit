@@ -1,23 +1,37 @@
 # 📜 Changelog
 
-All notable changes to the CodeOrbit project will be documented in this file.
+All notable changes to CodeOrbit will be documented here.
+
+---
+
+## [1.1.0] - 2026-06-18
+
+### Cleaned
+- Removed all pre-rebrand legacy documentation ("Forge Learn", "BODHIT", "Lovable API" references).
+- Deleted redundant files: `REPOSITORY_RESTRUCTURE.md`, `AUDIT_REPORT.md`, `DEPLOYMENT_CHECKLIST.md`, `SCHEMA_SQL_TO_EXECUTE.sql`, legacy `OTP_SETUP_GUIDE.md` (nodemailer/Gmail App Password approach).
+- Consolidated 4 overlapping database setup guides into a single `database/DATABASE_SETUP_GUIDE.md`.
+- Removed `lovable-tagger` from `devDependencies`.
+- Rewrote `README.md` — concise, table-driven, accurate.
+- Rewrote `docs/DEPLOYMENT_GUIDE.md` — reflects actual Resend + Gemini + Supabase stack.
+- Rewrote `docs/integrations/GOOGLE_AUTH_OTP_SETUP.md` — covers actual Supabase Auth + Resend approach.
+- Rewrote `docs/development/CONVERSATION_PERSISTENCE_GUIDE.md` — accurate hook/service API reference.
 
 ---
 
 ## [1.0.0] - 2026-06-18
 
 ### Added
-- Created vertical vertical navigation [ActivityBar.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/ActivityBar.tsx).
-- Created [FileTabs.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/FileTabs.tsx) to manage open virtual filesystem documents.
-- Created status panel [StatusBar.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/StatusBar.tsx) showing cursor line/column coordinates and branches.
-- Created breadcrumbs panel [Breadcrumbs.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/Breadcrumbs.tsx).
-- Created local files upload capability in [FileOperationsPanel.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/FileOperationsPanel.tsx).
-- Added cursor position telemetry monitoring in Monaco [CodeEditor.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/CodeEditor.tsx).
+- Vertical navigation bar [`ActivityBar.tsx`](frontend/src/components/ide/ActivityBar.tsx).
+- Open-file tab management [`FileTabs.tsx`](frontend/src/components/ide/FileTabs.tsx).
+- Bottom status panel [`StatusBar.tsx`](frontend/src/components/ide/StatusBar.tsx) with cursor line/column.
+- Path breadcrumbs [`Breadcrumbs.tsx`](frontend/src/components/ide/Breadcrumbs.tsx).
+- Local file upload in [`FileOperationsPanel.tsx`](frontend/src/components/ide/FileOperationsPanel.tsx).
+- Cursor telemetry monitoring in [`CodeEditor.tsx`](frontend/src/components/ide/CodeEditor.tsx).
 
 ### Changed
-- Rebranded the platform from "Forge Learn" / "BODHIT" to **CodeOrbit** and **Orbit AI**.
-- Restructured workspace directory layout: moved frontend elements under `/frontend`, backend Express mailer under `/backend`, database SQL setups under `/database`, edge functions under `/functions`, and consolidated documentation under `/docs`.
-- Standardized configuration scopes in `tsconfig.json`, `tailwind.config.ts`, `vite.config.ts`, and `components.json`.
+- Rebranded platform from "Forge Learn" / "BODHIT" → **CodeOrbit** / **Orbit AI**.
+- Restructured workspace: `frontend/`, `backend/`, `database/`, `functions/`, `docs/`.
+- Aligned `tsconfig.json`, `tailwind.config.ts`, `vite.config.ts`, and `components.json` to new paths.
 
 ### Fixed
-- Resolved file selection tab synchronization bug in [IDEWorkspace.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/IDEWorkspace.tsx).
+- File selection tab sync bug in [`IDEWorkspace.tsx`](frontend/src/components/ide/IDEWorkspace.tsx).
