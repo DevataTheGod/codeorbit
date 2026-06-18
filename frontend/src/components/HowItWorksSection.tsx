@@ -1,4 +1,6 @@
-import { FileCode, GitCommit, BookOpen, UserCheck, ShieldAlert, Award, ArrowRight, Check, X } from "lucide-react";
+import { FileCode, GitCommit, BookOpen, UserCheck, ShieldAlert, Award, ArrowRight, Check } from "lucide-react";
+import { Link } from "react-router-dom";
+import type { SectionId } from "@/pages/Index";
 
 const steps = [
   {
@@ -51,7 +53,11 @@ const steps = [
   },
 ];
 
-const HowItWorksSection = () => {
+interface HowItWorksSectionProps {
+  onNavigate?: (id: SectionId) => void;
+}
+
+const HowItWorksSection = ({ onNavigate: _onNavigate }: HowItWorksSectionProps) => {
   return (
     <section id="how-it-works" className="py-24 relative">
       <div className="absolute inset-0 grid-pattern opacity-20" />
@@ -133,10 +139,13 @@ const HowItWorksSection = () => {
             Submit your project idea and prove you're here to learn.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors">
+            <Link
+              to="/submit-project"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
+            >
               Submit Project Idea
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>
