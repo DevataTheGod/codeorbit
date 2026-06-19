@@ -116,16 +116,16 @@ function ContactCard({
   return (
     <Wrapper
       {...(href ? { href, target: href.startsWith("http") ? "_blank" : undefined } : {})}
-      className={`group flex items-start gap-4 p-5 rounded-xl border bg-card/50 transition-all duration-300 hover:bg-card hover:scale-[1.02] hover:shadow-lg ${href ? "cursor-pointer" : ""}`}
+      className={`group flex items-start gap-4 p-5 rounded-xl border bg-card/50 transition-all duration-300 hover:bg-card hover:scale-[1.02] hover:shadow-lg ${href ? "cursor-pointer" : ""} min-w-0`}
     >
       <div
         className={`flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${colorMap[color]}`}
       >
         <Icon className="w-5 h-5" />
       </div>
-      <div>
+      <div className="min-w-0 flex-1">
         <p className="text-xs font-mono text-muted-foreground mb-0.5">{label}</p>
-        <p className="font-semibold text-sm">{value}</p>
+        <p className="font-semibold text-sm break-all">{value}</p>
         <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>
       </div>
     </Wrapper>
