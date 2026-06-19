@@ -231,8 +231,8 @@ const Auth = () => {
             <>
               {/* Logo */}
               <div className="flex items-center justify-center gap-3 mb-8">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
-                  <Terminal className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-lg overflow-hidden border border-primary/30 flex items-center justify-center bg-card">
+                  <img src="/logo.jpg" alt="CodeOrbit Logo" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-bold text-xl tracking-tight font-heading">CodeOrbit</span>
