@@ -34,10 +34,10 @@ const FooterSection = ({ onNavigate }: FooterSectionProps) => {
             </p>
             <div className="flex gap-3">
               {[
-                { icon: Github, href: "#", label: "GitHub" },
+                { icon: Github, href: "https://github.com/DevataTheGod", label: "GitHub" },
                 { icon: Twitter, href: "#", label: "Twitter" },
                 { icon: Linkedin, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "#", label: "Email" },
+                { icon: Mail, href: "mailto:2k24.cs1l.2410719@gmail.com", label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}

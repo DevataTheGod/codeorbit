@@ -29,9 +29,9 @@ const CONTACT_CARDS = [
   {
     icon: Mail,
     label: "Email Us",
-    value: "hello@codeorbit.dev",
+    value: "2k24.cs1l.2410719@gmail.com",
     sub: "We reply within 24 hours",
-    href: "mailto:hello@codeorbit.dev",
+    href: "mailto:2k24.cs1l.2410719@gmail.com",
     color: "primary",
   },
   {
@@ -61,7 +61,7 @@ const CONTACT_CARDS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: Github, href: "#", label: "GitHub" },
+  { icon: Github, href: "https://github.com/DevataTheGod", label: "GitHub" },
   { icon: Twitter, href: "#", label: "Twitter" },
   { icon: Linkedin, href: "#", label: "LinkedIn" },
 ];
@@ -397,11 +397,11 @@ const ContactSection = () => {
                   For urgent queries or official communications, write directly to our inbox.
                 </p>
                 <a
-                  href="mailto:hello@codeorbit.dev"
+                  href="mailto:2k24.cs1l.2410719@gmail.com"
                   className="inline-flex items-center gap-2 text-sm font-mono text-primary hover:underline"
                 >
                   <Mail className="w-4 h-4" />
-                  hello@codeorbit.dev
+                  2k24.cs1l.2410719@gmail.com
                 </a>
               </div>
             </div>
