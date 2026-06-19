@@ -25,7 +25,7 @@ CodeOrbit includes a zero-config, VS Code-like coding workspace at `/ide`:
 ## 3. Plagiarism Telemetry & Code Explanation Modal
 
 - **Paste Detection:** If the IDE detects a block copy-paste event, the workspace flags the milestone as "suspicious" and activates an alert banner.
-- **Code Quiz (POW Verification):** When the student clicks "Submit for Review," they must explain their code changes via the [CodeExplanationModal.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/components/ide/CodeExplanationModal.tsx). Orbit quizzes the student on the pasted code. Passing verifies the work, while failing flags it for review.
+- **Code Quiz (POW Verification):** When the student clicks "Submit for Review," they must explain their code changes via the [CodeExplanationModal.tsx](file:///home/dev/Desktop/projects/codeorbit/frontend/src/components/ide/CodeExplanationModal.tsx). Orbit quizzes the student on the pasted code. Passing verifies the work, while failing flags it for review.
 
 ---
 

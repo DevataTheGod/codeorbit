@@ -24,7 +24,7 @@ const getLanguage = (path: string | null): string => {
 
 const CodeEditor = ({ selectedFile, code, onChange, onCursorChange }: CodeEditorProps) => {
   const { toast } = useToast();
-  const { telemetry, logKeystroke } = useTelemetry(code);
+  const { telemetry, logKeystroke } = useTelemetry(code, selectedFile);
 
   const handleChange = (value: string | undefined) => {
     logKeystroke();

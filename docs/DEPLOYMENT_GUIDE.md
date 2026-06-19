@@ -12,7 +12,7 @@ supabase link --project-ref <YOUR_PROJECT_REF>
 supabase db push
 ```
 
-> Run `database/schema/COMPLETE_DATABASE_SCHEMA.sql` and `database/setup/CREATE_USER_TRIGGER.sql` in the Supabase SQL Editor if deploying fresh.
+> Run `database/UNIFIED_DATABASE_SETUP.sql` in the Supabase SQL Editor if deploying fresh to create all tables, enums, triggers, and column schemas in one step.
 
 ---
 

@@ -35,7 +35,7 @@ CodeOrbit is an enterprise-grade, project-based educational SaaS platform. It co
 ## 📁 Project Structure
 
 ```
-Project-Skill/
+codeorbit/
 ├── frontend/                   # React SPA (Vite)
 │   └── src/
 │       ├── pages/              # Route-level page components

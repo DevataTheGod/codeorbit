@@ -159,7 +159,7 @@ const IDEWorkspaceContent = () => {
                         <p className="text-[10px] text-muted-foreground mb-1 uppercase">Current Repository</p>
                         <div className="text-xs font-mono truncate text-primary flex items-center gap-2">
                            <Github className="w-3 h-3" />
-                           AnuragShivoham/Project-Skill
+                           AnuragShivoham/codeorbit
                         </div>
                       </div>
                       

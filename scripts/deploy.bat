@@ -1,9 +1,9 @@
 @echo off
-REM Project-Skill Chatbot Deployment Script (Windows PowerShell version)
+REM CodeOrbit Chatbot Deployment Script (Windows PowerShell version)
 REM This script automates the deployment of the mentor_reports table and Supabase function
 
 echo ==========================================
-echo Project-Skill Chatbot Deployment
+echo CodeOrbit Chatbot Deployment
 echo ==========================================
 echo.
 

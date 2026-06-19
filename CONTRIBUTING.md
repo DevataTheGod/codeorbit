@@ -15,7 +15,8 @@ Thank you for choosing to contribute to CodeOrbit! Follow these guidelines to en
    ```bash
    cp config/.env.example .env
    ```
-4. Run the frontend client and backend OTP servers concurrently (see [LOCAL_DEVELOPMENT.md](file:///home/dev/Desktop/projects/Project-Skill/docs/LOCAL_DEVELOPMENT.md)).
+4. Run the frontend client and backend OTP servers concurrently (see [LOCAL_DEVELOPMENT.md](file:///home/dev/Desktop/projects/codeorbit/docs/LOCAL_DEVELOPMENT.md)).
+5. Code updates should be fully typed and adhere to naming guidelines.
 
 ---
 
@@ -31,7 +32,7 @@ Thank you for choosing to contribute to CodeOrbit! Follow these guidelines to en
 
 - **TypeScript:** Enforce typing; avoid using `any` type definitions.
 - **Components:** Keep React components reusable, located under `frontend/src/components/`.
-- **Styling:** Use Tailwind CSS utility classes aligned with tokens defined in [tailwind.config.ts](file:///home/dev/Desktop/projects/Project-Skill/tailwind.config.ts).
+- **Styling:** Use Tailwind CSS utility classes aligned with tokens defined in [tailwind.config.ts](file:///home/dev/Desktop/projects/codeorbit/tailwind.config.ts).
 - **Comments:** Retain all documentation strings and descriptive comments.
 
 ---

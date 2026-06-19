@@ -25,31 +25,31 @@ CodeOrbit uses a Supabase-managed PostgreSQL database. Security and access scope
 - **`users`:** Core user table linked to Supabase authentication (`auth.users`).
   - Fields: `id` (UUID, PK), `email` (VARCHAR, Unique), `role` (VARCHAR), `created_at`, `updated_at`.
 - **`profiles`:** Stores public profile information.
-  - Fields: `id` (UUID, PK references `users.id`), `full_name` (VARCHAR), `avatar_url` (TEXT), `role` (ENUM: `admin` | `mentor` | `student`), `plan` (VARCHAR: `'free'` | `'pro'`).
+  - Fields: `id` (UUID, PK), `user_id` (UUID reference to `auth.users(id)`), `full_name` (TEXT), `email` (TEXT), `avatar_url` (TEXT), `role` (ENUM: `admin` | `mentor` | `student`), `plan` (VARCHAR: `'free'` | `'pro'`).
 
 ### 2. `user_roles`
 - Mappings to control roles in PostgreSQL queries.
-  - Fields: `id` (UUID, PK), `user_id` (UUID reference), `role` (VARCHAR CHECK: `'student'`, `'mentor'`, `'admin'`).
+  - Fields: `id` (UUID, PK), `user_id` (UUID reference to `auth.users(id)`), `role` (ENUM `app_role`: `'student'`, `'mentor'`, `'admin'`).
 
 ### 3. `project_submissions`
 - Tracks projects submitted by students.
-  - Fields: `id` (UUID, PK), `user_id` (UUID reference), `project_title` (VARCHAR), `project_description` (TEXT), `tech_stack` (TEXT[]), `skill_level` (VARCHAR), `skill_score` (NUMERIC), `deadline` (TIMESTAMP), `status` (VARCHAR: `'draft'`, `'submitted'`, `'in-review'`, `'approved'`, `'rejected'`).
+  - Fields: `id` (UUID, PK), `user_id` (UUID reference to `auth.users(id)`), `project_title` (TEXT), `project_description` (TEXT), `tech_stack` (TEXT[]), `skill_assessment` (JSONB), `skill_score` (INTEGER), `deadline` (DATE), `status` (TEXT: `'draft'`, `'submitted'`, `'in-review'`, `'approved'`, `'rejected'`), `mentor_access` (BOOLEAN), `full_name` (TEXT), `email` (TEXT), `college` (TEXT), `year_of_study` (TEXT).
 
 ### 4. `milestones` & `tasks`
 - **`milestones`:** Automated milestone roadmap steps.
-  - Fields: `id` (UUID, PK), `submission_id` (UUID reference), `title` (VARCHAR), `description` (TEXT), `status` (VARCHAR: `'pending'`, `'in-progress'`, `'completed'`, `'blocked'`), `order_index` (INT).
+  - Fields: `id` (UUID, PK), `submission_id` (UUID reference to `project_submissions(id)`), `title` (TEXT), `description` (TEXT), `status` (TEXT: `'pending'`, `'in_progress'`, `'completed'`, `'approved'`, `'rejected'`), `order_index` (INTEGER), `source` (TEXT: `'ai'` | `'mentor'` | `'student'`).
 - **`tasks`:** Granular checklist steps.
-  - Fields: `id` (UUID, PK), `milestone_id` (UUID reference), `title` (VARCHAR), `progress` (NUMERIC), `status` (VARCHAR), `time_spent` (INT).
+  - Fields: `id` (UUID, PK), `milestone_id` (UUID reference to `milestones(id)`), `title` (TEXT), `description` (TEXT), `progress` (INTEGER), `status` (TEXT: `'pending'`, `'in_progress'`, `'completed'`), `order_index` (INTEGER).
 
 ### 5. `conversations` & `messages`
 - **`conversations`:** Tracks Socratic learning sessions.
-  - Fields: `id` (UUID, PK), `user_id` (UUID reference), `submission_id` (UUID reference), `title` (TEXT), `project_idea` (TEXT), `tech_stack` (TEXT), `intake_confirmed` (BOOLEAN), `status` (VARCHAR).
+  - Fields: `id` (UUID, PK), `user_id` (UUID reference to `auth.users(id)`), `submission_id` (UUID reference to `project_submissions(id)`), `title` (TEXT), `project_idea` (TEXT), `tech_stack` (TEXT), `intake_confirmed` (BOOLEAN), `status` (VARCHAR).
 - **`messages`:** Individual chat messages.
-  - Fields: `id` (UUID, PK), `conversation_id` (UUID reference), `role` (VARCHAR: `'user'`, `'assistant'`), `content` (TEXT), `message_type` (VARCHAR), `file_ops` (JSONB), `mentor_report` (JSONB).
+  - Fields: `id` (UUID, PK), `conversation_id` (UUID reference to `conversations(id)`), `role` (VARCHAR: `'user'`, `'assistant'`), `content` (TEXT), `message_type` (VARCHAR), `file_ops` (JSONB), `mentor_report` (JSONB).
 
 ### 6. `mentor_reports`
 - AI-generated student progress evaluations.
-  - Fields: `id` (UUID, PK), `submission_id` (UUID reference), `conversation_id` (UUID reference), `report` (JSONB), `status` (VARCHAR).
+  - Fields: `id` (UUID, PK), `submission_id` (UUID reference to `project_submissions(id)`), `conversation_id` (UUID reference to `conversations(id)`), `report` (JSONB), `status` (VARCHAR).
 
 ---
 

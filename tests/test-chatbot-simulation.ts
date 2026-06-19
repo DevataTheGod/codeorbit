@@ -1,5 +1,5 @@
 /**
- * Test script to simulate Project-Skill Chatbot interactions.
+ * Test script to simulate CodeOrbit Chatbot interactions.
  * Tests:
  * 1. Intake parsing (project idea, tech stack, skill level, timeline)
  * 2. Intake confirmation flow (yes/no)
@@ -140,7 +140,7 @@ Next steps: ...`,
 
 // Run tests
 console.log("=".repeat(80));
-console.log("PROJECT-SKILL CHATBOT TEST SIMULATION");
+console.log("CODEORBIT CHATBOT TEST SIMULATION");
 console.log("=".repeat(80));
 console.log();
 

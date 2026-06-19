@@ -23,5 +23,5 @@ All data tables run on Row-Level Security:
 ## 3. Academic Integrity & Anti-Cheat Telemetry
 
 To ensure that the student is actually typing and writing their code:
-- **Typing telemetry:** [useTelemetry.ts](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/hooks/useTelemetry.ts) monitors keystroke timestamps. Instantly pasted blocks of code are flagged.
-- **Socratic Code Defense:** Pasted codes trigger Socratic oral exams where Orbit AI quizzes the student. Task locks can only be manually released by human mentors in the [MentorDashboard.tsx](file:///home/dev/Desktop/projects/Project-Skill/frontend/src/pages/MentorDashboard.tsx).
+- **Typing telemetry:** [useTelemetry.ts](file:///home/dev/Desktop/projects/codeorbit/frontend/src/hooks/useTelemetry.ts) monitors keystroke timestamps. Instantly pasted blocks of code are flagged.
+- **Socratic Code Defense:** Pasted codes trigger Socratic oral exams where Orbit AI quizzes the student. Task locks can only be manually released by human mentors in the [MentorDashboard.tsx](file:///home/dev/Desktop/projects/codeorbit/frontend/src/pages/MentorDashboard.tsx).

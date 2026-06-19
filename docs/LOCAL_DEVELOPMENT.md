@@ -20,27 +20,32 @@ Create a `.env` file in the project root by copying the template:
 cp config/.env.example .env
 ```
 
-Fill in the required variables (see [ENVIRONMENT_VARIABLES.md](file:///home/dev/Desktop/projects/Project-Skill/docs/ENVIRONMENT_VARIABLES.md)).
+Fill in the required variables (see [ENVIRONMENT_VARIABLES.md](file:///home/dev/Desktop/projects/codeorbit/docs/ENVIRONMENT_VARIABLES.md)).
 
 ---
 
 ## 3. Running the Project Locally
 
-Two local runtimes must be started concurrently to enable the full workflow:
+To run the project locally, you can start both the frontend client and the backend server concurrently using a single command:
+
+```bash
+npm start
+```
+
+*   **Vite Frontend Client:** http://localhost:8080
+*   **Express OTP Server:** http://localhost:8787
+
+Alternatively, you can start them in separate terminal tabs if you need isolated logs:
 
 ### 1. Start Frontend Vite Server
-Launches the browser IDE and student/mentor dashboards.
 ```bash
 npm run dev
 ```
-- **Local Address:** `http://localhost:8080` (configured in `vite.config.ts`).
 
 ### 2. Start Express OTP Server
-Launches the email sending microservice.
 ```bash
 npm run otp-server
 ```
-- **Local Address:** `http://localhost:8787` (configured in `backend/server.ts`).
 
 ---
 
@@ -48,6 +53,6 @@ npm run otp-server
 
 A simulation script is provided to test the Socratic Chat (Orbit AI) prompts and report outputs in the terminal:
 ```bash
-npm run tsx tests/test-chatbot-simulation.ts
+npm run test:simulation
 ```
 This script acts as a headless client mock to verify that Gemini responds using Socratic directives without generating code blocks.

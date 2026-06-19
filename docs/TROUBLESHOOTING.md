@@ -31,5 +31,5 @@ Review this guide to resolve common developmental or architectural issues when w
 ### Issue: New users sign up but cannot load StudentDashboard (roles/profiles missing)
 - **Cause:** The PostgreSQL trigger that duplicates `auth.users` into `public.profiles` failed or is missing.
 - **Solution:**
-  1. Run the [CREATE_USER_TRIGGER.sql](file:///home/dev/Desktop/projects/Project-Skill/database/setup/CREATE_USER_TRIGGER.sql) script inside your Supabase SQL editor to reinstate the profile sync trigger.
+  1. Run the [CREATE_USER_TRIGGER.sql](file:///home/dev/Desktop/projects/codeorbit/database/setup/CREATE_USER_TRIGGER.sql) script inside your Supabase SQL editor to reinstate the profile sync trigger.
   2. Ensure RLS is enabled and policies allow public selects on profiles.

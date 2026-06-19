@@ -9,7 +9,7 @@ interface TelemetryData {
   complexityScore: number;
 }
 
-export const useTelemetry = (code: string, skillScore: number = 5) => {
+export const useTelemetry = (code: string, filePath: string | null = null, skillScore: number = 5) => {
   const [telemetry, setTelemetry] = useState<TelemetryData>({
     keystrokeIntervals: [],
     pasteEvents: [],
@@ -21,6 +21,24 @@ export const useTelemetry = (code: string, skillScore: number = 5) => {
   
   const lastKeyTime = useRef<number>(Date.now());
   const initialCodeLength = useRef<number>(code.length);
+  const currentFilePath = useRef<string | null>(filePath);
+
+  // Reset telemetry state and initial code length when switching files
+  useEffect(() => {
+    if (filePath !== currentFilePath.current) {
+      currentFilePath.current = filePath;
+      initialCodeLength.current = code.length;
+      lastKeyTime.current = Date.now();
+      setTelemetry({
+        keystrokeIntervals: [],
+        pasteEvents: [],
+        totalCharsTyped: 0,
+        suspiciousActivity: false,
+        warnings: [],
+        complexityScore: 0,
+      });
+    }
+  }, [filePath, code]);
 
   const logKeystroke = useCallback(() => {
     const now = Date.now();
@@ -79,7 +97,13 @@ export const useTelemetry = (code: string, skillScore: number = 5) => {
       
       // If code complexity is high but typing volume is low, flag it
       // High complexity (> 15) for a student with low skill score (< 7)
-      const isQualityJump = complexity > 15 && skillScore < 7 && prev.totalCharsTyped < (code.length * 0.2);
+      // We only flag quality jump if they actually typed, modified the file, and added substantial code
+      const addedLength = Math.max(0, code.length - initialCodeLength.current);
+      const isQualityJump = complexity > 15 && 
+                            skillScore < 7 && 
+                            prev.totalCharsTyped > 0 && 
+                            addedLength > 50 && 
+                            prev.totalCharsTyped < (addedLength * 0.2);
       
       if (isQualityJump && !newWarnings.includes("Sudden quality jump detected (Possible AI over-reliance)")) {
         newWarnings.push("Sudden quality jump detected (Possible AI over-reliance)");
@@ -108,6 +132,7 @@ export const useTelemetry = (code: string, skillScore: number = 5) => {
       totalCharsTyped: 0,
       suspiciousActivity: false,
       warnings: [],
+      complexityScore: 0,
     })
   };
 };

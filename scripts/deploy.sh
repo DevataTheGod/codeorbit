@@ -1,11 +1,11 @@
 #!/bin/bash
-# Project-Skill Chatbot Deployment Script
+# CodeOrbit Chatbot Deployment Script
 # This script automates the deployment of the mentor_reports table and Supabase function
 
 set -e  # Exit on error
 
 echo "=========================================="
-echo "Project-Skill Chatbot Deployment"
+echo "CodeOrbit Chatbot Deployment"
 echo "=========================================="
 echo ""
 

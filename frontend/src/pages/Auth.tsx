@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { OTPVerification } from "@/components/OTPVerification";
 import { OTPService } from "@/services/OTPService";
-import { GoogleAuthOTPService } from "@/services/GoogleAuthOTPService";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Form,

@@ -8,7 +8,7 @@ Orbit AI chat history is persisted to Supabase so students can resume sessions a
 
 | Layer | File | Responsibility |
 |---|---|---|
-| **Database** | `database/migrations/20260204_create_conversations_and_messages.sql` | `conversations` + `messages` tables with RLS |
+| **Database** | `database/migrations/20260204120000_create_conversations_and_messages.sql` | `conversations` + `messages` tables with RLS |
 | **Service** | `frontend/src/services/ConversationService.ts` | CRUD operations against Supabase |
 | **Hook** | `frontend/src/hooks/useConversationHistory.ts` | React state wrapper over ConversationService |
 | **UI** | `frontend/src/components/ConversationHistory.tsx` | Sidebar list of past sessions |
