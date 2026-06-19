@@ -6,7 +6,7 @@
   "scripts": {
     "frontend": "vite",
     "otp-server": "tsx backend/server.ts",
-    "dev": "concurrently \"npm run frontend\" \"npm run otp-server\"",
+    "dev": "node scripts/dev.js",
     "start": "npm run dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
