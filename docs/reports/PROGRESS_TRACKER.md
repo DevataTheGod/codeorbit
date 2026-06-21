@@ -17,6 +17,7 @@
 - ✅ Product decision framework
 - ✅ Product north star
 - ✅ Validation Dashboard implemented and secured (TASK-0006)
+- ✅ Student A-E validation matrix defined inside the Validation Dashboard
 
 ### Engineering
 - ✅ Supabase backend
@@ -33,6 +34,23 @@
 - ✅ Audited legacy codebase file structures (TASK-0001)
 - ✅ Configured project architecture rules (TASK-0002)
 - ✅ Route-level auth protection (TASK-0003)
+- ✅ API security and RLS hardening completed (TASK-0004)
+- ✅ Unit/integration testing scaffold added with Vitest and React Testing Library (TASK-0005)
+- ✅ 20 automated tests passing across auth guards, telemetry, reflection challenges, and Understanding Score
+- ✅ Score history query service with score_version field
+- ✅ Reflection history query service
+- ✅ Mentor dashboard score timeline
+- ✅ Mentor dashboard reflection history
+- ✅ Understanding Score explainability breakdown component
+- ✅ mentor_validations table for storing mentor rankings
+- ✅ Validation comparison component with correlation calculation
+- ✅ CSV export for validation reports
+- ✅ Settings panel with editable font size and theme
+- ✅ Quick Format (renamed from Prettier, basic formatting)
+- ✅ Extensions install state persisted to localStorage
+- ✅ Dynamic notifications from milestones
+- ✅ Save Snapshot with metadata (replaced misleading git terminology)
+- ✅ Removed fake Build stability metric, replaced with real file count
 
 ### Documentation
 - ✅ Restructured and migrated legacy files (moved to docs/archive/)
@@ -46,32 +64,31 @@
 ## In Progress 🟡
 
 ### Product
-- 🟡 Understanding Score v1 (implemented, needs validation)
-- 🟡 Reflection Challenge v1 (implemented, needs validation)
-- 🟡 Mentor Dashboard (basic, needs v2)
+- 🟡 Execute Student A-E validation matrix against real app flows (TASK-0007)
+- 🟡 Collect mentor verification rankings (TASK-0008)
 
 ### Engineering
-- 🟡 API security and RLS policies (JWT verify, CORS restriction) (TASK-0004)
-- 🟡 Configure unit and integration testing pipelines (TASK-0005)
+- 🟡 Pilot safety cleanup: restrict CORS, define rate-limit strategy (TASK-0009)
+- 🟡 Pilot acceptance checklist (TASK-0010)
 - 🟡 Real-time updates (not started)
-- 🟡 Score timeline (not started)
-- 🟡 Orbit interaction scoring (not started)
+
+---
+
+## Backlog
+- Model switching — single AI provider sufficient for pilot (low priority)
 
 ---
 
 ## Not Started 🔴
 
 ### Critical
-- 🔴 End-to-end testing scenarios
-- 🔴 Complete production RLS validation
+- 🔴 End-to-end browser testing scenarios
+- 🔴 Production deployment smoke-test runbook
 
 ### Features
-- 🔴 Score timeline
-- 🔴 Concept mastery breakdown
-- 🔴 Orbit interaction scoring
-- 🔴 Mentor Dashboard v2
-- 🔴 Reflection history
-- 🔴 Cohort analytics
+- 🔴 Concept mastery breakdown (detailed concept-level scoring)
+- 🔴 Mentor Dashboard v2 (advanced analytics, cohort trends)
+- 🔴 Cohort analytics (batch statistics, trend graphs)
 - 🔴 Multi-tenant support
 - 🔴 Real-time subscriptions
 - 🔴 Mobile responsive
@@ -91,11 +108,11 @@
 | Category | Completed | In Progress | Not Started | % |
 |----------|-----------|-------------|-------------|---|
 | Business | 6 | 0 | 0 | 100% |
-| Product | 6 | 2 | 5 | 46% |
-| Engineering | 14 | 2 | 17 | 42% |
-| Security & Testing | 0 | 2 | 2 | 0% |
+| Product | 7 | 3 | 5 | 47% |
+| Engineering | 17 | 6 | 15 | 45% |
+| Security & Testing | 4 | 2 | 2 | 50% |
 | Documentation | 9 | 0 | 0 | 100% |
-| **Total** | **35** | **6** | **24** | **53%** |
+| **Total** | **43** | **11** | **22** | **57%** |
 
 ---
 
@@ -109,14 +126,17 @@
 - Database migration
 - Supabase persistence
 
-### Next 7 Days (Security Hardening & Initial Validation)
-- Implement Route-level Auth Guards (protect `/admin`, `/mentor`, `/student`, `/ide`, `/submit-project`, `/progress`)
-- Verify Edge function JWT authorization is enforced
+### Current Phase: Phase 3 - Validation & Pilot Readiness
+- Execute Student A-E validation matrix in real app flows
+- Compare Understanding Score rankings against expected behavior
+- Collect mentor rankings without revealing the scoring logic
+- Clean up pilot safety gaps: fake-data sync path, CORS, rate limiting strategy
 
-### Next 14 Days (Validation & Testing Setup)
-- Execute validation matrix for Student A, B, C, D, E and compare heuristics
-- Request mentor ranking verification for score feedback accuracy
-- Install Vitest and React Testing Library for frontend testing
+### Next 14 Days (Pilot Confidence)
+- Add E2E route/auth smoke tests
+- Draft pilot acceptance checklist
+- Add score-history/reflection-history data design
+- Decide whether ValidationDashboard should keep the DB sync button or move it to a separate local seed script
 
 ### Next 30 Days (Real-time & Moat Expansion)
 - Add Orbit interaction and reasoning scoring

@@ -55,10 +55,10 @@ const StatusBar = ({
         <div 
           className="flex items-center gap-1.5 text-green-500 hover:bg-muted px-2 py-0.5 rounded cursor-pointer"
           onClick={onFormatClick}
-          title="Format Document (Prettier)"
+          title="Quick Format"
         >
           <CheckCircle className="w-3.5 h-3.5" />
-          <span>Prettier</span>
+          <span>Quick Format</span>
         </div>
       </div>
     </div>

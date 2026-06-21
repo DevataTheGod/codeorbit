@@ -201,6 +201,14 @@ serve(async (req) => {
   }
 
   try {
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Missing Authorization header" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { submissionId } = await req.json();
 
     if (!submissionId) {
@@ -218,20 +226,70 @@ serve(async (req) => {
       throw new Error("Supabase credentials not configured");
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    // Initialize user-scoped client to check access under RLS
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+    const userClient = createClient(SUPABASE_URL, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
 
-    const { data: submission, error: fetchError } = await supabase
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    if (authError || !user) {
+      console.error("Auth validation failed:", authError);
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Query using user client first to respect RLS
+    const { data: submission, error: fetchError } = await userClient
       .from("project_submissions")
       .select("*")
       .eq("id", submissionId)
       .single();
 
     if (fetchError || !submission) {
-      console.error("Failed to fetch submission:", fetchError);
-      return new Response(JSON.stringify({ error: "Submission not found" }), {
+      console.error("Failed to fetch submission or access denied:", fetchError);
+      return new Response(JSON.stringify({ error: "Submission not found or access denied" }), {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // Double check ownership or staff credentials
+    const isOwner = submission.user_id === user.id;
+    let isStaff = false;
+
+    const { data: roles } = await userClient.from("user_roles").select("role");
+    if (roles && roles.some(r => r.role === "mentor" || r.role === "admin")) {
+      isStaff = true;
+    }
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+    if (!isOwner && !isStaff) {
+      if (submission.user_id === null) {
+        // Claim the legacy/anonymous submission for the authenticated user
+        console.log(`Associating anonymous submission ${submissionId} with user ${user.id}`);
+        const { error: claimError } = await supabase
+          .from("project_submissions")
+          .update({ user_id: user.id })
+          .eq("id", submissionId);
+
+        if (claimError) {
+          console.error("Failed to claim submission:", claimError);
+          return new Response(JSON.stringify({ error: "Failed to claim submission" }), {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        submission.user_id = user.id;
+      } else {
+        return new Response(JSON.stringify({ error: "Access denied" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     }
 
     console.log("Generating milestones for:", submission.project_title);

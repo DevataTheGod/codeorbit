@@ -1,68 +1,52 @@
 [
   {
-    "id": "TASK-0001",
-    "title": "Audit legacy codebase file structures",
-    "phase": "Phase 1 - Legacy Code Integration",
+    "id": "TASK-0007",
+    "title": "Execute Student A-E validation matrix",
+    "phase": "Phase 3 - Validation & Pilot Readiness",
     "priority": "high",
-    "status": "completed",
-    "depends_on": [],
-    "description": "Perform dependency scans and review codebase readiness score.",
-    "created": "2026-06-19T15:44:09.754902",
-    "completed": "2026-06-21T14:16:53.226482"
-  },
-  {
-    "id": "TASK-0002",
-    "title": "Configure project architecture rules",
-    "phase": "Phase 1 - Legacy Code Integration",
-    "priority": "medium",
-    "status": "completed",
+    "status": "active",
     "depends_on": [
-      "TASK-0001"
+      "TASK-0006"
     ],
-    "description": "Define forbidden and required technologies inside configuration.",
-    "created": "2026-06-19T15:44:09.754911",
-    "completed": "2026-06-21T14:16:56.098807"
+    "description": "Run the strong, copy-paste, mixed, bypass, and mastery student scenarios through real app workflows and record expected vs actual Understanding Score behavior.",
+    "created": "2026-06-21T15:15:00.000000"
   },
   {
-    "id": "TASK-0003",
-    "title": "Implement route-level auth protection",
-    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "id": "TASK-0008",
+    "title": "Collect mentor verification rankings",
+    "phase": "Phase 3 - Validation & Pilot Readiness",
     "priority": "high",
-    "status": "completed",
-    "depends_on": [],
-    "description": "Set up React Router route guards in the frontend to prevent unauthenticated access to student/mentor/admin dashboards and the IDE workspace.",
-    "created": "2026-06-21T14:18:23.186412",
-    "completed": "2026-06-21T14:31:42.658728"
+    "status": "active",
+    "depends_on": [
+      "TASK-0007"
+    ],
+    "description": "Ask 1-2 mentors to rank anonymized students by apparent understanding, then compare the rankings against CodeOrbit's Understanding Score outputs.",
+    "created": "2026-06-21T15:15:00.000000"
   },
   {
-    "id": "TASK-0004",
-    "title": "Harden API security and RLS policies",
-    "phase": "Phase 2 - Security Hardening & Testing Setup",
-    "priority": "high",
-    "status": "pending",
-    "depends_on": [],
-    "description": "Ensure edge functions verify JWT tokens correctly, prevent client role escalation, and audit Supabase Row-Level Security (RLS) tables.",
-    "created": "2026-06-21T14:18:25.840382"
-  },
-  {
-    "id": "TASK-0005",
-    "title": "Configure unit and integration testing",
-    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "id": "TASK-0009",
+    "title": "Pilot safety cleanup",
+    "phase": "Phase 3 - Validation & Pilot Readiness",
     "priority": "medium",
-    "status": "pending",
-    "depends_on": [],
-    "description": "Install and configure Vitest or Jest, set up React Testing Library, and write initial test scripts to verify core components.",
-    "created": "2026-06-21T14:18:28.537374"
+    "status": "active",
+    "depends_on": [
+      "TASK-0004",
+      "TASK-0006"
+    ],
+    "description": "Remove production-facing fake-data mutation paths, restrict CORS to approved origins, and add basic rate-limit strategy for AI edge functions.",
+    "created": "2026-06-21T15:15:00.000000"
   },
   {
-    "id": "TASK-0006",
-    "title": "Implement Validation Dashboard",
-    "phase": "Phase 2 - Security Hardening & Testing Setup",
-    "priority": "high",
-    "status": "completed",
-    "depends_on": [],
-    "description": "Create ValidationDashboard.tsx showing student cohort understanding scores, risk levels, paste flags, and reflection completion statistics, and secure it.",
-    "created": "2026-06-21T14:34:10.210746",
-    "completed": "2026-06-21T14:34:14.583478"
+    "id": "TASK-0010",
+    "title": "Define pilot acceptance checklist",
+    "phase": "Phase 3 - Validation & Pilot Readiness",
+    "priority": "medium",
+    "status": "active",
+    "depends_on": [
+      "TASK-0007",
+      "TASK-0008"
+    ],
+    "description": "Document the minimum conditions required before onboarding a real bootcamp pilot: auth, validation confidence, dashboard usability, support process, and rollback plan.",
+    "created": "2026-06-21T15:15:00.000000"
   }
 ]

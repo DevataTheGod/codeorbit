@@ -17,6 +17,7 @@ export interface UnderstandingScore {
   progress: number;
   riskLevel: 'mastery' | 'on-track' | 'at-risk' | 'struggling' | 'critical';
   confidence: number;      // 0-1: How confident we are in the score
+  scoreVersion: string;    // e.g. "v1", "v1.1" — tracks algorithm changes
   conceptScores?: Record<string, number>;
   factors: ScoreFactorDetail[];
   createdAt: string;
@@ -42,6 +43,7 @@ export interface TelemetryEvent {
 
 const STORAGE_KEY = 'CODEORBIT_UNDERSTANDING_SCORES';
 const TELEMETRY_KEY = 'CODEORBIT_TELEMETRY';
+const SCORE_VERSION = 'v1';
 
 // Weight configuration
 const WEIGHTS = {
@@ -106,6 +108,7 @@ export const UnderstandingScoreService = {
       progress,
       riskLevel,
       confidence,
+      scoreVersion: SCORE_VERSION,
       factors,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -309,6 +312,13 @@ export const UnderstandingScoreService = {
           progress: score.progress,
           risk_level: score.riskLevel,
           confidence: score.confidence,
+          score_version: score.scoreVersion || SCORE_VERSION,
+          score_factors: {
+            engagement: score.engagement,
+            explanation: score.explanation,
+            progress: score.progress,
+            overall: score.overall,
+          },
           concept_scores: score.conceptScores || {},
           factors: score.factors,
           updated_at: score.updatedAt,
@@ -390,6 +400,7 @@ export const UnderstandingScoreService = {
         progress: Number(data.progress),
         riskLevel: data.risk_level,
         confidence: Number(data.confidence),
+        scoreVersion: data.score_version || SCORE_VERSION,
         conceptScores: data.concept_scores || {},
         factors: data.factors || [],
         createdAt: data.created_at,
@@ -423,6 +434,7 @@ export const UnderstandingScoreService = {
         progress: Number(row.progress),
         riskLevel: row.risk_level,
         confidence: Number(row.confidence),
+        scoreVersion: row.score_version || SCORE_VERSION,
         conceptScores: row.concept_scores || {},
         factors: row.factors || [],
         createdAt: row.created_at,
@@ -439,6 +451,41 @@ export const UnderstandingScoreService = {
    */
   getScoresForSubmission(submissionId: string): UnderstandingScore[] {
     return this.getLocalScores().filter(s => s.submissionId === submissionId);
+  },
+
+  /**
+   * Get score history for a user (ordered by date, oldest first)
+   */
+  async getScoreHistory(userId: string): Promise<UnderstandingScore[]> {
+    try {
+      const { data, error } = await supabase
+        .from('understanding_scores')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: true });
+
+      if (error || !data) return this.getLocalScores().filter(s => s.userId === userId);
+
+      return data.map(row => ({
+        id: row.id,
+        userId: row.user_id,
+        submissionId: row.submission_id,
+        overall: Number(row.overall),
+        engagement: Number(row.engagement),
+        explanation: Number(row.explanation),
+        progress: Number(row.progress),
+        riskLevel: row.risk_level,
+        confidence: Number(row.confidence),
+        scoreVersion: row.score_version || SCORE_VERSION,
+        conceptScores: row.concept_scores || {},
+        factors: row.factors || [],
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      }));
+    } catch (err) {
+      console.warn('Failed to fetch score history:', err);
+      return this.getLocalScores().filter(s => s.userId === userId);
+    }
   },
 
   /**

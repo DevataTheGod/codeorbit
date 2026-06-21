@@ -49,11 +49,30 @@ const IDEWorkspaceContent = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [isGitSyncing, setIsGitSyncing] = useState(false);
   const [dashboardContext, setDashboardContext] = useState<any>(null);
-  const [notifications] = useState([
-    { id: 1, text: "Mentor left a comment on your Auth checkpoint.", time: "2 hours ago" },
-    { id: 2, text: "AI roadmap generated successfully.", time: "1 day ago" },
-    { id: 3, text: "Welcome to CodeOrbit!", time: "2 days ago" },
-  ]);
+  
+  // Dynamic notifications from milestones
+  const notifications = useMemo(() => {
+    const items: Array<{ id: number; text: string; time: string }> = [];
+    
+    if (dashboardContext?.milestones) {
+      const completed = dashboardContext.milestones.filter((m: any) => m.status === 'completed' || m.status === 'approved');
+      const active = dashboardContext.milestones.filter((m: any) => m.status !== 'completed' && m.status !== 'approved');
+      
+      completed.slice(0, 2).forEach((m: any, i: number) => {
+        items.push({ id: i + 1, text: `Milestone completed: ${m.title}`, time: 'Recently' });
+      });
+      
+      active.slice(0, 2).forEach((m: any, i: number) => {
+        items.push({ id: items.length + 1, text: `Active milestone: ${m.title}`, time: 'Now' });
+      });
+    }
+    
+    if (items.length === 0) {
+      items.push({ id: 1, text: 'Welcome to CodeOrbit!', time: 'Just now' });
+    }
+    
+    return items;
+  }, [dashboardContext]);
 
   const currentFileNode = selectedFile ? files[selectedFile] : null;
   const code = currentFileNode?.content || "";
@@ -124,28 +143,44 @@ const IDEWorkspaceContent = () => {
     }, 1200);
   };
 
-  const handleGitCommitSync = () => {
+  const handleSaveSnapshot = () => {
     setIsGitSyncing(true);
-    toast({ title: "Staging files...", description: "Adding local changes to index." });
+    toast({ title: "Saving snapshot...", description: "Preserving current file state." });
+    
     setTimeout(() => {
-      toast({ title: "Committing...", description: "git commit -m 'Update project files'" });
-      setTimeout(() => {
-        toast({ title: "Syncing...", description: "git push origin main" });
-        setTimeout(() => {
-          setIsGitSyncing(false);
-          toast({ title: "Repository Synced", description: "Successfully pushed to DevataTheGod/codeorbit" });
-        }, 1000);
-      }, 1000);
-    }, 1000);
+      const snapshot = {
+        timestamp: new Date().toISOString(),
+        fileCount: Object.keys(files).length,
+        projectName: dashboardContext?.submission?.project_title || 'Untitled Project',
+        snapshotVersion: Date.now(),
+        createdBy: user?.id || 'anonymous',
+        files: files,
+      };
+      
+      localStorage.setItem(`CODEORBIT_SNAPSHOT`, JSON.stringify(snapshot));
+      
+      setIsGitSyncing(false);
+      toast({ 
+        title: "Snapshot saved", 
+        description: `Saved ${snapshot.fileCount} files at ${new Date().toLocaleTimeString()}` 
+      });
+    }, 800);
   };
 
-  const handleFormatPrettier = () => {
+  const handleQuickFormat = () => {
     if (!selectedFile || !currentFileNode) return;
-    toast({ title: "Prettier", description: "Formatting code..." });
+    toast({ title: "Quick Format", description: "Formatting code..." });
     setTimeout(() => {
-      let formatted = currentFileNode.content || "";
+      let content = currentFileNode.content || "";
+      // Basic formatting: trim trailing whitespace, normalize indentation
+      const lines = content.split("\n");
+      const formatted = lines
+        .map((line) => line.replace(/\s+$/, ""))
+        .join("\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim() + "\n";
       updateNode(selectedFile, formatted);
-      toast({ title: "Prettier", description: "File formatted successfully." });
+      toast({ title: "Quick Format", description: "File formatted successfully." });
     }, 400);
   };
 
@@ -217,11 +252,26 @@ const IDEWorkspaceContent = () => {
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   
+  // Editor settings (persisted to localStorage)
+  const [editorSettings, setEditorSettings] = useState(() => {
+    try {
+      const stored = localStorage.getItem('CODEORBIT_SETTINGS');
+      return stored ? JSON.parse(stored) : { fontSize: 14, theme: 'VS Dark' };
+    } catch {
+      return { fontSize: 14, theme: 'VS Dark' };
+    }
+  });
+  
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const saveSettings = (newSettings: typeof editorSettings) => {
+    setEditorSettings(newSettings);
+    localStorage.setItem('CODEORBIT_SETTINGS', JSON.stringify(newSettings));
+  };
 
   const panelSizes = useMemo(() => {
     if (screenWidth < 1200) {
@@ -410,26 +460,26 @@ const IDEWorkspaceContent = () => {
                       className="h-9 flex items-center justify-between px-3 hover:bg-muted/50 transition-colors shrink-0"
                       onClick={() => setActiveView(activeView === "git" ? "" : "git")}
                     >
-                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Source Control</span>
+                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Snapshots</span>
                       <span className="text-xs text-muted-foreground">{activeView === "git" ? "−" : "+"}</span>
                     </button>
                     {activeView === "git" && (
                       <div className="flex-1 overflow-auto p-3">
                         <div className="p-3 bg-muted/30 rounded border border-border mb-3">
-                          <p className="text-[10px] text-muted-foreground mb-1 uppercase">Repository</p>
+                          <p className="text-[10px] text-muted-foreground mb-1 uppercase">Project</p>
                           <div className="text-xs font-mono truncate text-primary flex items-center gap-2">
                             <GitBranch className="w-3 h-3" />
-                            DevataTheGod/codeorbit
+                            {dashboardContext?.submission?.project_title || 'Untitled Project'}
                           </div>
                         </div>
                         <Button 
                           size="sm" 
                           className="w-full text-xs h-8 gap-1.5"
-                          onClick={handleGitCommitSync}
+                          onClick={handleSaveSnapshot}
                           disabled={isGitSyncing}
                         >
                           {isGitSyncing && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                          Commit & Sync
+                          Save Snapshot
                         </Button>
                       </div>
                     )}
@@ -466,11 +516,39 @@ const IDEWorkspaceContent = () => {
                       <div className="flex-1 overflow-y-auto p-4 space-y-4 text-left">
                         <div>
                           <Label className="text-[11px] text-muted-foreground">Editor Font Size</Label>
-                          <div className="text-xs mt-1 p-2 bg-muted rounded border border-border">14px (JetBrains Mono)</div>
+                          <div className="flex gap-1 mt-1">
+                            {[12, 14, 16, 18].map((size) => (
+                              <button
+                                key={size}
+                                className={`text-xs px-2 py-1 rounded border transition-colors ${
+                                  editorSettings.fontSize === size
+                                    ? 'bg-primary text-primary-foreground border-primary'
+                                    : 'bg-muted border-border hover:bg-muted/80'
+                                }`}
+                                onClick={() => saveSettings({ ...editorSettings, fontSize: size })}
+                              >
+                                {size}px
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         <div>
                           <Label className="text-[11px] text-muted-foreground">Theme</Label>
-                          <div className="text-xs mt-1 p-2 bg-muted rounded border border-border">VS Dark (Deep Space)</div>
+                          <div className="flex flex-col gap-1 mt-1">
+                            {['VS Dark', 'Light', 'Solarized'].map((theme) => (
+                              <button
+                                key={theme}
+                                className={`text-xs px-2 py-1 rounded border text-left transition-colors ${
+                                  editorSettings.theme === theme
+                                    ? 'bg-primary text-primary-foreground border-primary'
+                                    : 'bg-muted border-border hover:bg-muted/80'
+                                }`}
+                                onClick={() => saveSettings({ ...editorSettings, theme })}
+                              >
+                                {theme}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         <div>
                           <Label className="text-[11px] text-muted-foreground">Plan Info</Label>
@@ -563,7 +641,7 @@ const IDEWorkspaceContent = () => {
         column={cursorPos.column}
         onSubmitClick={() => setIsVerificationOpen(true)}
         onBranchClick={handleBranchClick}
-        onFormatClick={handleFormatPrettier}
+        onFormatClick={handleQuickFormat}
       />
 
       <CodeExplanationModal

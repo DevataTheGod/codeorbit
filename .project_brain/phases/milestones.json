@@ -1,11 +1,37 @@
 [
   {
     "name": "Phase 1 - Legacy Code Integration",
-    "target": "TBD",
-    "status": "in_progress",
+    "target": "Completed 2026-06-21",
+    "status": "completed",
     "features": [
       "Audit codebase file structures",
-      "Configure architecture conventions"
+      "Configure architecture conventions",
+      "Restructure documentation",
+      "Stabilize IDE workspace"
+    ]
+  },
+  {
+    "name": "Phase 2 - Security Hardening & Testing Setup",
+    "target": "Completed 2026-06-21",
+    "status": "completed",
+    "features": [
+      "Route-level auth protection",
+      "Role-protected admin and mentor routes",
+      "Secure signup role trigger",
+      "JWT validation in edge functions",
+      "Vitest test suite with auth, telemetry, reflection, and score tests"
+    ]
+  },
+  {
+    "name": "Phase 3 - Validation & Pilot Readiness",
+    "target": "Next 7-14 days",
+    "status": "active",
+    "features": [
+      "Run Student A-E validation matrix against real app flows",
+      "Collect mentor ranking feedback",
+      "Compare mentor judgment vs Understanding Score ranking",
+      "Remove or isolate fake-data database sync from production-facing dashboard",
+      "Define pilot acceptance checklist"
     ]
   }
 ]

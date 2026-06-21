@@ -352,4 +352,38 @@ export const ReflectionChallengeService = {
       },
     };
   },
+
+  /**
+   * Get challenge history for a user (ordered by date, oldest first)
+   */
+  async getChallengeHistory(userId: string): Promise<ReflectionChallenge[]> {
+    try {
+      const { data, error } = await supabase
+        .from('reflection_challenges')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: true });
+
+      if (error || !data) return this.getChallengesForUser(userId);
+
+      return data.map(row => ({
+        id: row.id,
+        userId: row.user_id,
+        conversationId: row.conversation_id,
+        milestoneId: row.milestone_id,
+        type: row.type,
+        prompt: row.prompt,
+        context: row.context,
+        status: row.status,
+        response: row.response,
+        score: row.score,
+        feedback: row.feedback,
+        createdAt: row.created_at,
+        completedAt: row.completed_at,
+      }));
+    } catch (err) {
+      console.warn('Failed to fetch challenge history:', err);
+      return this.getChallengesForUser(userId);
+    }
+  },
 };

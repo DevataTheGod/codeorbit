@@ -1,89 +1,114 @@
 # Feature Completion Matrix
 
-| Feature | Status | Completion | Dependencies | Risk |
-|---------|--------|------------|--------------|------|
-| **Authentication** | COMPLETE | 95% | Supabase Auth | Low |
-| Email/Password | COMPLETE | 100% | — | — |
-| Google OAuth | COMPLETE | 100% | — | — |
-| OTP Verification | PARTIAL | 30% | OTP Server, Resend | Medium |
-| Role Management | COMPLETE | 90% | user_roles table | Low |
-| **Project Submission** | COMPLETE | 90% | project_submissions | Low |
-| 3-Step Wizard | COMPLETE | 100% | — | — |
-| Skill Assessment | COMPLETE | 100% | — | — |
-| Tech Stack Selection | COMPLETE | 100% | — | — |
-| **Milestones** | COMPLETE | 85% | milestones, tasks tables | Low |
-| AI Generation | COMPLETE | 90% | generate-milestones function | Medium |
-| Manual Creation | COMPLETE | 100% | — | — |
-| Status Tracking | COMPLETE | 100% | — | — |
-| **IDE** | COMPLETE | 80% | Monaco Editor | Low |
-| Code Editor | COMPLETE | 100% | — | — |
-| File Explorer | COMPLETE | 100% | — | — |
-| Terminal (Simulated) | PARTIAL | 60% | — | Low |
-| File Operations | COMPLETE | 90% | localStorage | Medium |
-| GitHub Clone | COMPLETE | 80% | Octokit | Low |
-| **Orbit AI** | COMPLETE | 75% | orbit-chat function | Medium |
-| Socratic Chat | COMPLETE | 90% | Gemini API | Medium |
-| Streaming Responses | COMPLETE | 100% | — | — |
-| Code Generation Prevention | COMPLETE | 95% | — | — |
-| Intake Collection | COMPLETE | 100% | — | — |
-| Mentor Reports | PARTIAL | 60% | — | Medium |
-| **Telemetry** | COMPLETE | 70% | useTelemetry hook | Low |
-| Paste Detection | COMPLETE | 90% | — | — |
-| Typing Analysis | COMPLETE | 80% | — | — |
-| Complexity Scoring | COMPLETE | 70% | — | Low |
-| **Understanding Score** | PARTIAL | 65% | UnderstandingScoreService | Medium |
-| Score Calculation | COMPLETE | 80% | — | — |
-| Risk Classification | COMPLETE | 90% | — | — |
-| Supabase Persistence | COMPLETE | 70% | understanding_scores table | Medium |
-| Score Timeline | MISSING | 0% | — | High |
-| Concept Breakdown | MISSING | 0% | — | High |
-| **Reflection Challenges** | PARTIAL | 60% | ReflectionChallengeService | Medium |
-| Challenge Generation | COMPLETE | 85% | — | — |
-| Response Evaluation | COMPLETE | 70% | — | — |
-| Supabase Persistence | COMPLETE | 60% | reflection_challenges table | Medium |
-| Challenge History | MISSING | 0% | — | High |
-| **Mentor Dashboard** | PARTIAL | 50% | MentorDashboard.tsx | Medium |
-| Student List | COMPLETE | 90% | — | — |
-| Score Display | COMPLETE | 70% | UnderstandingScoreWidget | Low |
-| Cohort Stats | PARTIAL | 50% | — | Medium |
-| Reflection History | MISSING | 0% | — | High |
-| Score Timeline | MISSING | 0% | — | High |
-| Batch Analytics | MISSING | 0% | — | High |
-| **Student Dashboard** | COMPLETE | 70% | StudentDashboard.tsx | Low |
-| Project Overview | COMPLETE | 90% | — | — |
-| Milestone View | COMPLETE | 85% | — | — |
-| Help Requests | COMPLETE | 80% | — | — |
-| Reviews Tab | PARTIAL | 50% | plan check | Medium |
-| **Admin Dashboard** | PARTIAL | 40% | AdminDashboard.tsx | Low |
-| User Management | PARTIAL | 60% | — | Medium |
-| Role Changes | COMPLETE | 80% | — | Low |
-| Analytics | MISSING | 0% | — | High |
-| **Real-time** | MISSING | 0% | — | High |
-| Live Score Updates | MISSING | 0% | Supabase Realtime | High |
-| Live Notifications | MISSING | 0% | — | High |
-| **Tests** | MISSING | 0% | — | High |
-| Unit Tests | MISSING | 0% | — | High |
-| Integration Tests | MISSING | 0% | — | High |
-| E2E Tests | MISSING | 0% | — | High |
-| **CI/CD** | MISSING | 0% | — | Medium |
-| **Multi-tenancy** | MISSING | 0% | — | High |
+## Production-Grade Features
+_Critical infrastructure — fully functional, tested, ready for pilot._
+
+| Feature | Status | Completion | Notes |
+|---------|--------|------------|-------|
+| **Authentication** | Production | 95% | Email/Password + Google OAuth |
+| Email/Password | Production | 100% | Supabase Auth |
+| Google OAuth | Production | 100% | Supabase Auth |
+| OTP Verification | Prototype | 30% | Depends on OTP server |
+| Role Management | Production | 90% | user_roles table + RLS |
+| **Project Submission** | Production | 90% | 3-Step wizard, skill assessment |
+| 3-Step Wizard | Production | 100% | — |
+| Skill Assessment | Production | 100% | — |
+| Tech Stack Selection | Production | 100% | — |
+| **Milestones** | Production | 85% | milestones + tasks tables |
+| AI Generation | Pilot | 90% | generate-milestones function |
+| Manual Creation | Production | 100% | — |
+| Status Tracking | Production | 100% | — |
+| **IDE** | Production | 80% | Monaco Editor core |
+| Code Editor | Production | 100% | Monaco + syntax highlighting |
+| File Explorer | Production | 100% | VFS with localStorage |
+| File Operations | Production | 90% | Create, rename, delete |
+| GitHub Clone | Production | 80% | Octokit integration |
+| **RLS Security** | Production | 90% | Row-level security on all tables |
+| **Routing** | Production | 100% | React Router with auth guards |
+
+## Pilot-Grade Features
+_Functional but needs real user validation before production._
+
+| Feature | Status | Completion | Notes |
+|---------|--------|------------|-------|
+| **Orbit AI** | Pilot | 75% | Socratic teaching only |
+| Socratic Chat | Pilot | 90% | Gemini API via edge function |
+| Streaming Responses | Pilot | 100% | — |
+| Code Generation Prevention | Pilot | 95% | 9 mandates enforced |
+| Intake Collection | Pilot | 100% | — |
+| Mentor Reports | Pilot | 60% | — |
+| **Understanding Score** | Pilot | 85% | Score calculation + explainability |
+| Score Calculation | Pilot | 80% | Engagement + explanation + progress |
+| Risk Classification | Pilot | 90% | mastery/on-track/at-risk/struggling/critical |
+| Supabase Persistence | Pilot | 70% | understanding_scores table |
+| Score Timeline | Pilot | 80% | getScoreHistory() — new |
+| Score Breakdown | Pilot | 90% | UnderstandingScoreBreakdown — new |
+| scoreVersion field | Pilot | 100% | Algorithm versioning — new |
+| **Reflection Challenges** | Pilot | 75% | Challenge generation + evaluation |
+| Challenge Generation | Pilot | 85% | Post-paste, post-milestone, concept, random |
+| Response Evaluation | Pilot | 70% | Length + explanation + structure scoring |
+| Supabase Persistence | Pilot | 60% | reflection_challenges table |
+| Challenge History | Pilot | 80% | getChallengeHistory() — new |
+| **Mentor Dashboard** | Pilot | 75% | Student list + score display + history |
+| Student List | Pilot | 90% | — |
+| Score Display | Pilot | 70% | UnderstandingScoreWidget |
+| Score Timeline | Pilot | 80% | Chronological score history — new |
+| Reflection History | Pilot | 80% | Completed challenges display — new |
+| Score Breakdown | Pilot | 90% | UnderstandingScoreBreakdown integration — new |
+| Cohort Stats | Pilot | 50% | Average understanding, at-risk count |
+| **Mentor Validation** | Pilot | 85% | mentor_validations table + comparison — new |
+| Validation Table | Pilot | 100% | RLS, unique constraint, updated_at — new |
+| Validation Comparison | Pilot | 90% | Ranking input, correlation calc, CSV export — new |
+| **Student Dashboard** | Pilot | 70% | Project overview + milestones |
+| Project Overview | Pilot | 90% | — |
+| Milestone View | Pilot | 85% | — |
+| Help Requests | Pilot | 80% | — |
+| **Telemetry** | Pilot | 70% | useTelemetry hook |
+| Paste Detection | Pilot | 90% | — |
+| Typing Analysis | Pilot | 80% | — |
+| Complexity Scoring | Pilot | 70% | — |
+
+## Prototype-Grade Features
+_Exist but limited functionality. Acceptable for pilot, not production._
+
+| Feature | Status | Completion | Notes |
+|---------|--------|------------|-------|
+| **IDE Extras** | Prototype | 60% | Extensions, settings, formatting |
+| Quick Format | Prototype | 40% | Trim whitespace, normalize indentation (not real Prettier) |
+| Extensions Panel | Prototype | 50% | Install state persists, but extensions are simulated |
+| Settings Panel | Prototype | 60% | Font size + theme selection, persisted to localStorage |
+| Terminal (Simulated) | Prototype | 60% | — |
+| Save Snapshot | Prototype | 50% | VFS saved to localStorage with metadata |
+| Dynamic Notifications | Prototype | 40% | Milestone-driven local generation only |
+| **Admin Dashboard** | Prototype | 45% | User management + role changes |
+| User Management | Prototype | 60% | — |
+| Role Changes | Pilot | 80% | — |
+| Analytics | Missing | 0% | — |
+| **Real-time** | Missing | 0% | No websocket infrastructure |
+| Live Score Updates | Missing | 0% | Supabase Realtime |
+| Live Notifications | Missing | 0% | — |
+| **Tests** | Prototype | 35% | Vitest + React Testing Library |
+| Unit Tests | Prototype | 45% | — |
+| Integration Tests | Prototype | 25% | — |
+| E2E Tests | Missing | 0% | — |
+| **CI/CD** | Missing | 0% | — |
 
 ---
 
 ## Summary
 
-| Status | Count |
-|--------|-------|
-| COMPLETE | 32 |
-| PARTIAL | 10 |
-| MISSING | 12 |
-| **Total** | **54** |
+| Tier | Feature Count | Avg Completion |
+|------|--------------|----------------|
+| Production | 17 | 93% |
+| Pilot | 25 | 80% |
+| Prototype | 12 | 40% |
+| **Total** | **54** | **75%** |
 
-| Category | % Complete |
-|----------|------------|
-| Core Features | 75% |
-| AI Features | 70% |
-| Analytics | 30% |
-| Infrastructure | 40% |
-| Testing | 0% |
-| **Overall** | **57%** |
+| Category | Tier | % Complete |
+|----------|------|------------|
+| Core Infrastructure | Production | 93% |
+| Mentor Intelligence | Pilot | 80% |
+| Orbit AI | Pilot | 75% |
+| IDE | Prototype | 50% |
+| Testing | Prototype | 35% |
+| **Overall** | — | **75%** |

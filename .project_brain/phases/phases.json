@@ -11,10 +11,25 @@
     {
       "name": "Phase 2 - Security Hardening & Testing Setup",
       "description": "Implement route-level auth protection, resolve security vulnerabilities (JWT, RLS, role escalation), and set up the unit/integration testing pipelines.",
-      "status": "active",
+      "status": "completed",
       "started": "2026-06-21T14:17:28.493164",
-      "tasks": []
+      "tasks": [],
+      "completed": "2026-06-21T14:50:50.291069",
+      "notes": "Completed Phase 2: Security Hardening & Testing Setup. Implemented route-level auth protection guards in frontend, established a comprehensive unit and integration testing suite in Vitest (20 tests passing), created and secured the pedagogical validation dashboard, and hardened Supabase Edge Functions with user JWT auth validation and RLS checks to prevent unauthorized access."
+    },
+    {
+      "name": "Phase 3 - Validation & Pilot Readiness",
+      "description": "Run real validation cases, compare Understanding Score outputs against mentor judgment, and close pilot-readiness gaps before adding new moat features.",
+      "status": "active",
+      "started": "2026-06-21T15:15:00.000000",
+      "tasks": [
+        "TASK-0007",
+        "TASK-0008",
+        "TASK-0009",
+        "TASK-0010"
+      ],
+      "notes": "Primary focus: prove score correctness and prepare a controlled pilot. Do not prioritize Orbit interaction scoring until validation evidence exists."
     }
   ],
-  "current_phase": "Phase 2 - Security Hardening & Testing Setup"
+  "current_phase": "Phase 3 - Validation & Pilot Readiness"
 }

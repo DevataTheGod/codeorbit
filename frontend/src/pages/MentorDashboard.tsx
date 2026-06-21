@@ -25,6 +25,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { UnderstandingScoreWidget } from "@/components/UnderstandingScoreWidget";
+import { UnderstandingScoreService, UnderstandingScore } from "@/services/UnderstandingScoreService";
+import { ReflectionChallengeService, ReflectionChallenge } from "@/services/ReflectionChallengeService";
+import { UnderstandingScoreBreakdown } from "@/components/UnderstandingScoreBreakdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -145,6 +148,17 @@ const MentorDashboard = () => {
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [submittingTask, setSubmittingTask] = useState(false);
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
+
+  // Score history and reflection history for expanded student
+  const [scoreHistory, setScoreHistory] = useState<UnderstandingScore[]>([]);
+  const [reflectionHistory, setReflectionHistory] = useState<ReflectionChallenge[]>([]);
+  const [currentStudentScore, setCurrentStudentScore] = useState<UnderstandingScore | null>(null);
+
+  // Mentor ranking input state
+  const [mentorRank, setMentorRank] = useState<number>(0);
+  const [mentorConfidence, setMentorConfidence] = useState<number>(3);
+  const [mentorNotes, setMentorNotes] = useState<string>("");
+  const [savingRanking, setSavingRanking] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -465,10 +479,67 @@ const MentorDashboard = () => {
   const toggleMilestone = (id: string) => {
     setExpandedMilestones((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
+  };
+
+  const fetchStudentHistory = async (userId: string) => {
+    try {
+      const [scores, reflections] = await Promise.all([
+        UnderstandingScoreService.getScoreHistory(userId),
+        ReflectionChallengeService.getChallengeHistory(userId),
+      ]);
+      setScoreHistory(scores);
+      setReflectionHistory(reflections);
+      // Set the latest score as the current score for breakdown
+      setCurrentStudentScore(scores.length > 0 ? scores[scores.length - 1] : null);
+    } catch (err) {
+      console.warn('Failed to fetch student history:', err);
+    }
+  };
+
+  const saveMentorRanking = async (studentId: string, studentName: string) => {
+    if (!user || mentorRank <= 0) return;
+    setSavingRanking(true);
+    try {
+      const { error } = await (supabase as any).from('mentor_validations').upsert(
+        {
+          mentor_id: user.id,
+          student_id: studentId,
+          mentor_score: currentStudentScore?.overall || 0,
+          mentor_rank: mentorRank,
+          confidence: mentorConfidence,
+          notes: mentorNotes || null,
+        },
+        { onConflict: 'mentor_id,student_id' }
+      );
+
+      if (error) throw error;
+
+      toast({
+        title: "Ranking Saved",
+        description: `Your assessment for ${studentName} has been saved.`,
+      });
+
+      // Reset form
+      setMentorRank(0);
+      setMentorConfidence(3);
+      setMentorNotes("");
+    } catch (err) {
+      console.error('Failed to save ranking:', err);
+      toast({
+        title: "Error",
+        description: "Failed to save ranking.",
+        variant: "destructive",
+      });
+    } finally {
+      setSavingRanking(false);
+    }
   };
 
   const startEditMilestone = (milestone: Milestone) => {
@@ -706,7 +777,16 @@ const MentorDashboard = () => {
                     <div key={sub.id} className="bg-card border border-border rounded-xl overflow-hidden">
                       <button
                         className="w-full p-6 text-left hover:bg-secondary/30 transition-colors"
-                        onClick={() => setSelectedSubmission(selectedSubmission === sub.id ? null : sub.id)}
+                        onClick={() => {
+                          const next = selectedSubmission === sub.id ? null : sub.id;
+                          setSelectedSubmission(next);
+                          if (next && sub.user_id) {
+                            fetchStudentHistory(sub.user_id);
+                          } else {
+                            setScoreHistory([]);
+                            setReflectionHistory([]);
+                          }
+                        }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -738,6 +818,74 @@ const MentorDashboard = () => {
                             submissionId={sub.id}
                             showDetails={true}
                           />
+
+                          {/* Score Breakdown (Explainability) */}
+                          {currentStudentScore && (
+                            <UnderstandingScoreBreakdown score={currentStudentScore} />
+                          )}
+
+                          {/* Score History Timeline */}
+                          <div className="border border-border rounded-lg p-4">
+                            <h4 className="font-medium mb-3 flex items-center gap-2">
+                              <Target className="w-4 h-4 text-primary" />
+                              Score History
+                            </h4>
+                            {scoreHistory.length === 0 ? (
+                              <p className="text-sm text-muted-foreground">No score history yet — student needs more activity.</p>
+                            ) : (
+                              <div className="space-y-2">
+                                {scoreHistory.map((score) => (
+                                  <div key={score.id} className="flex items-center justify-between p-2 bg-secondary/20 rounded-md">
+                                    <div className="flex items-center gap-3">
+                                      <span className="text-xs text-muted-foreground w-20">
+                                        {new Date(score.createdAt).toLocaleDateString()}
+                                      </span>
+                                      <span className="text-sm font-medium">{score.overall}%</span>
+                                      <Badge className={cn("text-xs", UnderstandingScoreService.getRiskColor(score.riskLevel))}>
+                                        {UnderstandingScoreService.getRiskLabel(score.riskLevel)}
+                                      </Badge>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">{score.scoreVersion}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Reflection History */}
+                          <div className="border border-border rounded-lg p-4">
+                            <h4 className="font-medium mb-3 flex items-center gap-2">
+                              <MessageSquare className="w-4 h-4 text-primary" />
+                              Reflection History
+                            </h4>
+                            {reflectionHistory.length === 0 ? (
+                              <p className="text-sm text-muted-foreground">No reflection challenges completed yet.</p>
+                            ) : (
+                              <div className="space-y-3">
+                                {reflectionHistory.filter(c => c.status === 'completed').slice(-5).reverse().map((challenge) => (
+                                  <div key={challenge.id} className="p-3 bg-secondary/20 rounded-md">
+                                    <div className="flex items-start justify-between mb-2">
+                                      <p className="text-sm font-medium line-clamp-1">{challenge.prompt}</p>
+                                      {challenge.score !== undefined && (
+                                        <Badge variant="outline" className="text-xs ml-2 shrink-0">
+                                          {challenge.score}%
+                                        </Badge>
+                                      )}
+                                    </div>
+                                    {challenge.response && (
+                                      <p className="text-xs text-muted-foreground line-clamp-2 mb-1">{challenge.response}</p>
+                                    )}
+                                    {challenge.feedback && (
+                                      <p className="text-xs text-primary/80 italic">{challenge.feedback}</p>
+                                    )}
+                                    <span className="text-[10px] text-muted-foreground">
+                                      {new Date(challenge.completedAt || challenge.createdAt).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
 
                           <div className="flex justify-between items-center">
                             <h4 className="font-medium">Milestones</h4>
@@ -887,6 +1035,73 @@ const MentorDashboard = () => {
                               ))}
                             </div>
                           )}
+
+                          {/* Mentor Assessment Input */}
+                          <div className="border border-border rounded-lg p-4 mt-4">
+                            <h4 className="font-medium mb-3 flex items-center gap-2">
+                              <User className="w-4 h-4 text-primary" />
+                              Mentor Assessment
+                            </h4>
+                            <div className="space-y-3">
+                              <div>
+                                <label className="text-sm text-muted-foreground mb-1 block">Rank (1 = strongest student)</label>
+                                <div className="flex gap-2">
+                                  {[1, 2, 3, 4, 5].map((rank) => (
+                                    <button
+                                      key={rank}
+                                      className={`w-10 h-10 rounded-lg border text-sm font-medium transition-colors ${
+                                        mentorRank === rank
+                                          ? 'bg-primary text-primary-foreground border-primary'
+                                          : 'bg-muted border-border hover:bg-muted/80'
+                                      }`}
+                                      onClick={() => setMentorRank(rank)}
+                                    >
+                                      {rank}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <label className="text-sm text-muted-foreground mb-1 block">Confidence</label>
+                                <div className="flex gap-1">
+                                  {[1, 2, 3, 4, 5].map((level) => (
+                                    <button
+                                      key={level}
+                                      className={`text-lg transition-colors ${
+                                        level <= mentorConfidence ? 'text-yellow-500' : 'text-muted-foreground/30'
+                                      }`}
+                                      onClick={() => setMentorConfidence(level)}
+                                    >
+                                      ★
+                                    </button>
+                                  ))}
+                                  <span className="text-xs text-muted-foreground ml-2">
+                                    {mentorConfidence === 1 ? 'Guess' :
+                                     mentorConfidence === 2 ? 'Low' :
+                                     mentorConfidence === 3 ? 'Medium' :
+                                     mentorConfidence === 4 ? 'High' : 'Very confident'}
+                                  </span>
+                                </div>
+                              </div>
+                              <div>
+                                <label className="text-sm text-muted-foreground mb-1 block">Notes (optional)</label>
+                                <Textarea
+                                  value={mentorNotes}
+                                  onChange={(e) => setMentorNotes(e.target.value)}
+                                  placeholder="Why did you rank this student here?"
+                                  rows={2}
+                                  className="text-sm"
+                                />
+                              </div>
+                              <Button
+                                size="sm"
+                                onClick={() => saveMentorRanking(sub.user_id || '', sub.full_name)}
+                                disabled={mentorRank <= 0 || savingRanking}
+                              >
+                                {savingRanking ? "Saving..." : "Save Assessment"}
+                              </Button>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>

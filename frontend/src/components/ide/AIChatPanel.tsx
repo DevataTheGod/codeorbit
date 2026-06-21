@@ -22,6 +22,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useConversationHistory } from "@/hooks/useConversationHistory";
+import { useProjectFiles } from "@/hooks/useProjectFiles";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -54,6 +55,8 @@ const AIChatPanel = ({
 }: AIChatPanelProps) => {
   const { toast } = useToast();
   const { currentConversation, startNewConversation, addMessage } = useConversationHistory();
+  const { files } = useProjectFiles();
+  const fileCount = Object.keys(files).length;
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -95,7 +98,7 @@ const AIChatPanel = ({
 
   const health = [
     { label: "Milestones completed", value: `${milestonesPercent}%`, progress: milestonesPercent, color: "bg-green-500" },
-    { label: "Build stability", value: "98%", progress: 98, color: "bg-purple-500" },
+    { label: "Project files", value: `${fileCount} files`, progress: Math.min(fileCount * 4, 100), color: "bg-purple-500" },
   ];
 
   useEffect(() => {

@@ -794,15 +794,10 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_role_text text;
   v_role public.app_role;
 BEGIN
-  v_role_text := COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'student');
-  IF v_role_text IN ('admin', 'mentor', 'student') THEN
-    v_role := v_role_text::public.app_role;
-  ELSE
-    v_role := 'student'::public.app_role;
-  END IF;
+  -- Always default to student on signup to prevent role hijacking/privilege escalation
+  v_role := 'student'::public.app_role;
 
   INSERT INTO public.profiles (id, user_id, full_name, email, role)
   VALUES (

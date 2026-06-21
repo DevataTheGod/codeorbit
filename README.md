@@ -1,6 +1,8 @@
 # CodeOrbit
 
-Learning Infrastructure Platform for Bootcamps
+**Learning Infrastructure Platform for Bootcamps**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
@@ -10,7 +12,7 @@ The AI era broke learning verification.
 
 Bootcamps cannot verify whether students truly understand their work. ChatGPT, Copilot, and Cursor enable fake project completion. Mentors cannot scale beyond 20 students.
 
-CodeOrbit exists to solve this.
+**CodeOrbit exists to solve this.**
 
 ---
 
@@ -20,42 +22,56 @@ Develop and verify independent software engineers at scale.
 
 ---
 
-## Core Problem
+## How It Works
 
-| Problem | Impact |
-|---------|--------|
-| Understanding unverifiable | 4-12 week gap between submission and interview |
-| AI making assessment worse | Fake project completion, false confidence |
-| Mentors don't scale | 20 sustainable, 50 difficult, 100+ impossible |
-
----
-
-## Core Customer
-
-Bootcamps (50-200 students/cohort)
-
----
-
-## Primary Users
-
-Students and Mentors
+```
+Student Creates Project
+        ↓
+Orbit Guides Learning (Never writes code)
+        ↓
+Telemetry Captures Behavior
+        ↓
+Reflection Challenges Test Understanding
+        ↓
+Understanding Score Generated
+        ↓
+Mentor Reviews & Validates
+```
 
 ---
 
-## Platform Components
+## Core Features
 
-1. **Understanding Score System** — Verify comprehension at scale
-2. **Orbit Socratic AI Mentor** — Never writes code, always teaches
-3. **Mentor Dashboard** — Scale mentorship to 100+ students
-4. **Project Roadmap Generator** — AI-powered milestone creation
-5. **Telemetry Engine** — Detect AI-assisted learning
-6. **Browser IDE** — Supporting infrastructure (not the moat)
+### Understanding Score
 
----
+AI-powered comprehension measurement based on:
+- **Engagement** (30%) — Orbit interactions, typing time, task attempts
+- **Reflection Quality** (40%) — How well students explain their code
+- **Progress** (30%) — Milestones completed
 
-## The Moat
+### Orbit AI Mentor
 
-Pedagogy + Telemetry + Mentor Intelligence + Understanding Verification
+Socratic teaching assistant that:
+- Guides students through projects
+- Never writes code for them
+- Asks questions to deepen understanding
+- Generates reflection challenges
+
+### Mentor Dashboard
+
+Scale mentorship to 100+ students:
+- View student scores and risk levels
+- Review reflection responses
+- Submit mentor assessments
+- Track student progress over time
+
+### Validation Framework
+
+Prove the Understanding Score works:
+- Mentor vs. system ranking comparison
+- Correlation calculation
+- CSV export for analysis
+- Audit trail for debugging
 
 ---
 
@@ -65,82 +81,111 @@ Pedagogy + Telemetry + Mentor Intelligence + Understanding Verification
 |-------|------------|
 | Frontend | React 18 + TypeScript + Vite + Tailwind + Monaco |
 | Backend | Supabase (PostgreSQL + RLS + Edge Functions) |
-| Edge Functions | Deno (Gemini 2.5 Flash via Lovable AI gateway) |
-| OTP Service | Express.js (port 8787, Resend email) |
+| Edge Functions | Deno (Gemini 2.5 Flash via AI gateway) |
+| Testing | Vitest + React Testing Library |
 
 ---
 
 ## Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/DevataTheGod/codeorbit.git
+cd codeorbit
+
 # Install dependencies
 npm install
 
 # Set up environment
 cp config/.env.example .env
 
-# Run development
-npm run dev          # Frontend → http://localhost:8080
-npm run otp-server   # OTP Server → http://localhost:8787
+# Start development
+npm run dev
 ```
 
-See [docs/engineering/development/LOCAL_SETUP.md](docs/engineering/development/LOCAL_SETUP.md) for full setup.
+See [Local Development Guide](docs/engineering/development/LOCAL_DEVELOPMENT_GUIDE.md) for full setup.
 
 ---
 
-## Architecture Overview
+## Documentation
 
-See [docs/engineering/architecture/CURRENT_ARCHITECTURE.md](docs/engineering/architecture/CURRENT_ARCHITECTURE.md) for the actual deployed architecture.
+### For Students
+- [Student Guide](docs/users/STUDENT_GUIDE.md) — How to use CodeOrbit
 
----
+### For Mentors
+- [Mentor Guide](docs/users/MENTOR_GUIDE.md) — How to review students
 
-## Documentation Index
+### For Admins
+- [Admin Guide](docs/users/ADMIN_GUIDE.md) — How to manage the platform
 
-### Context (Start Here)
-- [Master Context](docs/context/MASTER_CONTEXT.md) — Single source of truth
-- [Business Context](docs/context/BUSINESS_CONTEXT.md) — Business model, customer, revenue
-- [Technical Context](docs/context/TECHNICAL_CONTEXT.md) — Architecture, stack, deployment
+### For Developers
+- [Engineering Handbook](docs/engineering/ENGINEERING_HANDBOOK.md) — Coding standards
+- [Local Development Guide](docs/engineering/development/LOCAL_DEVELOPMENT_GUIDE.md) — Setup instructions
+- [Current Architecture](docs/engineering/architecture/CURRENT_ARCHITECTURE.md) — System design
 
-### Strategy
-- [Founder Thesis](docs/strategy/FOUNDER_THESIS.md) — Why CodeOrbit exists
-- [Business Strategy](docs/strategy/BUSINESS_STRATEGY.md) — Business strategy
-- [GTM Execution](docs/strategy/GTM_EXECUTION.md) — Go-to-market plan
+### For Investors
+- [Investor Deck](docs/investor/INVESTOR_DECK.md) — Business overview
 
-### Product
-- [Product Decision Framework](docs/product/PRODUCT_DECISION_FRAMEWORK.md) — Feature decision filter
-- [Product North Star](docs/product/PRODUCT_NORTH_STAR.md) — Mission, metrics, priorities
-- [Product Spec](docs/product/PRODUCT_SPEC.md) — Product requirements
-
-### Engineering
-- [Current Architecture](docs/engineering/architecture/CURRENT_ARCHITECTURE.md) — Actual architecture
-- [API Reference](docs/engineering/api/API_REFERENCE.md) — API documentation
-- [Database Reference](docs/engineering/architecture/DATABASE_ARCHITECTURE.md) — Database schema and RLS design
-
-### AI
-- [AI Agent Rules](docs/ai/AI_AGENT_RULES.md) — Rules for AI agents
-- [Orbit AI System](docs/context/AI_CONTEXT.md) — Socratic AI system design
-- [Prompts Reference](docs/context/AI_CONTEXT.md#prompt-architecture) — AI prompt inventory and mandates
+### For Pilot Partners
+- [Bootcamp Pilot Guide](docs/pilot/BOOTCAMP_PILOT_GUIDE.md) — How to run a pilot
 
 ---
 
-## Product Priorities
+## Architecture
 
-1. Understanding Score
-2. Reflection Challenges
-3. Mentor Dashboard
-4. Orbit Mentor
-5. Roadmaps
-6. Telemetry
-7. IDE
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Frontend (React)                        │
+│  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌─────────────┐ │
+│  │ Student │  │  Mentor  │  │  Admin   │  │     IDE     │ │
+│  │Dashboard│  │Dashboard │  │Dashboard │  │  (Monaco)   │ │
+│  └────┬────┘  └────┬─────┘  └────┬─────┘  └──────┬──────┘ │
+│       │            │             │                │        │
+│       └────────────┴─────────────┴────────────────┘        │
+│                          │                                  │
+│                    Supabase Client                          │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────┴──────────────────────────────────┐
+│                    Supabase Backend                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────────┐ │
+│  │PostgreSQL│  │   RLS    │  │   Auth   │  │   Edge     │ │
+│  │ Database │  │ Policies │  │  (JWT)   │  │ Functions  │ │
+│  └──────────┘  └──────────┘  └──────────┘  └────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+See [Architecture Documentation](docs/engineering/architecture/) for details.
+
+---
+
+## Product Status
+
+| Area | Status |
+|------|--------|
+| Authentication & RBAC | ✅ Production |
+| Student Workflow | ✅ Production |
+| Orbit AI | 🟡 Pilot |
+| Understanding Score | 🟡 Pilot |
+| Mentor Dashboard | 🟡 Pilot |
+| Validation Framework | 🟡 Pilot |
+
+See [Feature Completion Matrix](docs/reports/FEATURE_COMPLETION_MATRIX.md) for details.
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for coding guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
 
 ---
 
 ## License
 
-MIT
+MIT © CodeOrbit

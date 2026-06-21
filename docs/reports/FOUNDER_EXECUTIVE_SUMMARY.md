@@ -19,10 +19,10 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 | Architecture | 85/100 | ✅ Solid React + Supabase foundation |
 | Core Student Workflow | 75/100 | ✅ Implemented, VFS backed editor |
 | Orbit AI | 75/100 | ✅ Functional, Socratic prompts |
-| Understanding Verification | 75/100 | ✅ V1 Built, Validation Dashboard complete |
-| Mentor Experience | 65/100 | 🟡 Improved (student details + validation matrix) |
+| Understanding Verification | 75/100 | ✅ V1 Built, Validation Dashboard complete; real validation still pending |
+| Mentor Experience | 85/100 | ✅ Score timeline, reflection history, breakdown, validation comparison |
 | Security | 80/100 | ✅ Hardened (JWT verify, route guards, RLS fixes) |
-| Testing | 25/100 | 🔴 Mostly Manual verification |
+| Testing | 45/100 | 🟡 Initial Vitest suite exists; E2E/manual pilot validation still missing |
 | Production Readiness | 65/100 | 🟡 Substantial progress toward pilot |
 
 **Overall Completion: ~70-75%**
@@ -39,19 +39,30 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 - ✅ Browser IDE with Monaco editor
 - ✅ Orbit AI Socratic chat (Gemini via Lovable)
 - ✅ Telemetry recording (paste, typing)
-- ✅ Understanding Score calculation
+- ✅ Understanding Score calculation with score versioning
+- ✅ Understanding Score explainability breakdown (engagement, reflection quality, progress, penalties)
 - ✅ Reflection Challenge generation and evaluation
-- ✅ Mentor Dashboard with student visibility
-- ✅ Database with 14 tables, RLS enabled
+- ✅ Mentor Dashboard with score timeline, reflection history, and score breakdown
+- ✅ Mentor Validation system (mentor_validations table + Validation Comparison with correlation)
+- ✅ IDE credibility (editable settings, Quick Format, extensions persistence)
+- ✅ Save Snapshot with metadata (replaced misleading git terminology)
+- ✅ Dynamic milestone-driven notifications
+- ✅ Database with 15 tables (including mentor_validations), RLS enabled
 - ✅ Workspace panel integration wrapped in robust error boundaries (ConversationHistory, CodeEditor, Terminal, AIChatPanel)
 - ✅ Resolved TypeScript compile errors by bypassing generated Supabase types using casts
 
 ### Product
 - ✅ Understanding Score formula defined
+- ✅ Understanding Score explainability (why a student got their score)
+- ✅ Score timeline (historical scores for trend analysis)
 - ✅ Reflection Challenge workflow (paste → challenge → score)
-- ✅ Mentor can see student scores
+- ✅ Reflection history (past challenges visible to mentors)
+- ✅ Mentor can see student scores with breakdown
+- ✅ Mentor can input rankings and compare with system (correlation calculation)
 - ✅ Risk level classification (mastery → critical)
 - ✅ Validation Dashboard implemented and secured (/validation route)
+- ✅ CSV export for validation reports
+- ✅ Initial automated test suite added (20 passing tests)
 
 ---
 
@@ -61,15 +72,12 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 1. **No real-time updates** — all data is fetch-on-mount
 2. **localStorage dependency** — editor files are stored locally (VFS)
 3. **No Orbit interaction scoring** — only paste/typing tracked
-4. **No score timeline** — only current score, no history
-5. **No reflection history** — mentor can't see past challenges
-6. **Testing setup missing** — manual validation only
+4. **Testing is still shallow** — unit/component tests exist, but no E2E or production smoke test runbook
 
 ### Feature Gaps
 - OTP verification commented out
 - GoogleAuthOTPService dead code
 - No pagination on any list
-- No automated unit/integration tests
 - No CI/CD
 
 ---
@@ -78,7 +86,7 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 
 | Risk | Severity | Impact |
 |------|----------|--------|
-| Security vulnerabilities | Critical | Data breach, trust loss |
+| Remaining security hardening | High | CORS/rate limiting/pilot controls still need closure |
 | No real-time | High | Poor UX, stale data |
 | localStorage dependency | High | Data loss, multi-device broken |
 | No Orbit scoring | Medium | Weak moat |
@@ -139,17 +147,17 @@ Overall SaaS:         ~70-75%
 
 ## What To Build Next (Priority Order)
 
-### Priority 1: Finish Route-Level Auth Guards (This Week)
-- Protect client routes: `/admin`, `/mentor`, `/student`, `/ide`, `/submit-project`, `/progress` from unauthenticated users.
+### Priority 1: Execute Validation Matrix
+- Run Student A, B, C, D, E through real app flows and record expected vs actual scores.
 
-### Priority 2: Execute Validation Matrix
-- Test and compare score behavior across Student A (strong), Student B (copy-paste), Student C (mixed), Student D (attempt bypass), Student E (power user).
+### Priority 2: Mentor Verification
+- Get 1-2 mentors to rank anonymized students without seeing the scoring logic.
 
-### Priority 3: Mentor Verification
-- Get 1–2 mentors to review student rankings and scores without showing the system logic to confirm score accuracy.
+### Priority 3: Pilot Safety Cleanup
+- Move fake-data sync out of production-facing UI, restrict CORS to approved origins, and define rate limiting for AI endpoints.
 
-### Priority 4: Set Up Testing Infrastructure
-- Integrate Vitest and React Testing Library, write core unit and integration verification tests.
+### Priority 4: E2E & Pilot Checklist
+- Add browser smoke tests and define the minimum pilot acceptance criteria.
 
 ---
 

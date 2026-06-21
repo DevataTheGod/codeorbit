@@ -4,8 +4,8 @@
     "description": "CodeOrbit is an enterprise-grade, project-based Educational Software-as-a-Service (SaaS) platform designed to act as a guided, hands-on engineering apprenticeship. It integrates a learning management dashboard, Socratic AI mentorship (Orbit), and an in-browser VS Code-like IDE to ensure students write every line of code themselves, avoiding the 'Tutorial Hell' and 'AI Copypasta' traps.",
     "version": "0.1.0",
     "created": "2026-06-19T15:44:09.753666",
-    "updated": "2026-06-21T14:34:14.586156",
-    "current_phase": "Phase 2 - Security Hardening & Testing Setup"
+    "updated": "2026-06-21T15:15:00.000000",
+    "current_phase": "Phase 3 - Validation & Pilot Readiness"
   },
   "tech_stack": {
     "languages": [
@@ -43,29 +43,34 @@
     "commit_message_style": ""
   },
   "key_files": [],
-  "active_tasks": [
+  "active_tasks": [],
+  "goals": [
+    "Validate that Understanding Score rankings match real mentor judgment",
+    "Prepare CodeOrbit for controlled pilot usage with real student cohorts",
+    "Reduce remaining production-readiness risks around CORS, rate limiting, monitoring, and data history"
+  ],
+  "milestones": [
     {
-      "id": "TASK-0004",
-      "description": "Harden API security and RLS policies",
-      "status": "pending",
-      "phase": "Phase 2 - Security Hardening & Testing Setup",
-      "priority": "high"
-    },
-    {
-      "id": "TASK-0005",
-      "description": "Configure unit and integration testing",
-      "status": "pending",
-      "phase": "Phase 2 - Security Hardening & Testing Setup",
-      "priority": "medium"
+      "name": "Phase 3 - Validation & Pilot Readiness",
+      "status": "active",
+      "goal": "Prove the learning-verification moat with mentor-reviewed validation runs and pilot-safe operational checks."
     }
   ],
-  "goals": [],
-  "milestones": [],
   "decisions": [
     {
       "date": "2026-06-21T14:17:05.046949",
       "decision": "Phase completed: Phase 1 - Legacy Code Integration",
       "reason": "Completed Phase 1. Cleaned up all duplicate functions/ directories and legacy documentation root files. Set up proper docs/ subdirectories. Verified typechecks and code compilation. Added robust error boundaries to the IDE workspace panel integrations."
+    },
+    {
+      "date": "2026-06-21T14:50:50.295579",
+      "decision": "Phase completed: Phase 2 - Security Hardening & Testing Setup",
+      "reason": "Completed Phase 2: Security Hardening & Testing Setup. Implemented route-level auth protection guards in frontend, established a comprehensive unit and integration testing suite in Vitest (20 tests passing), created and secured the pedagogical validation dashboard, and hardened Supabase Edge Functions with user JWT auth validation and RLS checks to prevent unauthorized access."
+    },
+    {
+      "date": "2026-06-21T15:15:00.000000",
+      "decision": "Phase started: Phase 3 - Validation & Pilot Readiness",
+      "reason": "The next highest-value milestone is proving that the Understanding Score reflects real student understanding before adding more feature surface area."
     }
   ],
   "open_design": {

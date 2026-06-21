@@ -14,6 +14,18 @@ Issues, limitations, and future improvements.
 | Legacy brand references | ✅ Resolved | Updated across codebase |
 | Broken symlink | ✅ Resolved | Recreated proper directory structure |
 
+### Resolved (Sprint — Phase B/C)
+
+| Issue | Status | Resolution |
+|-------|--------|------------|
+| Settings panel non-editable | ✅ Resolved | Font size (12/14/16/18) and theme (VS Dark/Light/Solarized), persisted to localStorage |
+| "Prettier" fake label | ✅ Resolved | Renamed to "Quick Format" — honest naming |
+| Extensions state lost on reload | ✅ Resolved | Install state persisted to localStorage `CODEORBIT_EXTENSIONS` |
+| "Commit & Sync" misleading | ✅ Resolved | Renamed to "Save Snapshot" with metadata |
+| "Build stability: 98%" fake metric | ✅ Resolved | Replaced with real file count from VFS |
+| Hardcoded notifications | ✅ Resolved | Dynamic from milestones, "Welcome to CodeOrbit!" fallback |
+| Source Control label misleading | ✅ Resolved | Renamed to "Snapshots" |
+
 ---
 
 ## Current Debt
@@ -23,7 +35,7 @@ Issues, limitations, and future improvements.
 | Issue | Impact | Priority |
 |-------|--------|----------|
 | Schema type mismatch | Local generated types (`types.ts`) lack columns/tables. Code relies on `as any` bypasses to compile. | Medium |
-| Security vulnerability gaps | JWT disabled for edge functions, RLS allows score bypass, permissive CORS | High (Active Phase 2) |
+| Remaining pilot security gaps | CORS still permissive, rate limiting not implemented, prompt input still needs sanitization | High (Active Phase 3) |
 | `tasks` table missing | Milestones have no child tasks in current schema | Medium |
 
 ### Frontend
@@ -32,6 +44,7 @@ Issues, limitations, and future improvements.
 |-------|--------|----------|
 | localStorage for IDE files | No persistence of editor files across devices | Low |
 | No real-time updates | Polling and fetch-on-mount instead of WebSockets/Realtime subscriptions | Medium |
+| Quick Format is not real Prettier | Basic formatting only (trim whitespace, normalize indentation). No AST-based formatting, no multi-language support. | Low |
 
 ### Backend
 
@@ -102,10 +115,10 @@ The initial fdocs mismatch has been successfully resolved:
 
 | Item | Impact | Effort | Priority |
 |------|--------|--------|----------|
-| Security vulnerabilities (JWT, RLS, CORS) | High | Low | P0 |
-| Route-level auth protection | High | Low | P0 |
+| CORS restriction and rate limiting | High | Low-Medium | P0 |
+| ValidationDashboard fake-data sync isolation | High | Low | P0 |
 | Local TypeScript schema sync | Medium | Low | P1 |
-| Unit & Integration testing pipelines | Medium | Medium | P1 |
+| Expand test coverage with E2E and production smoke tests | Medium | Medium | P1 |
 | Real-time updates (Supabase Realtime) | Low | High | P2 |
 
 ---

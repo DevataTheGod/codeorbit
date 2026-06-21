@@ -44,5 +44,27 @@
     "description": "Create ValidationDashboard.tsx showing student cohort understanding scores, risk levels, paste flags, and reflection completion statistics, and secure it.",
     "created": "2026-06-21T14:34:10.210746",
     "completed": "2026-06-21T14:34:14.583478"
+  },
+  {
+    "id": "TASK-0005",
+    "title": "Configure unit and integration testing",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "medium",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Install and configure Vitest or Jest, set up React Testing Library, and write initial test scripts to verify core components.",
+    "created": "2026-06-21T14:18:28.537374",
+    "completed": "2026-06-21T14:45:27.995105"
+  },
+  {
+    "id": "TASK-0004",
+    "title": "Harden API security and RLS policies",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "high",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Ensure edge functions verify JWT tokens correctly, prevent client role escalation, and audit Supabase Row-Level Security (RLS) tables.",
+    "created": "2026-06-21T14:18:25.840382",
+    "completed": "2026-06-21T14:50:35.211526"
   }
 ]

@@ -20,61 +20,84 @@ interface Extension {
 const ExtensionsPanel = () => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const [extensions, setExtensions] = useState<Extension[]>([
-    {
-      id: "code-linter",
-      name: "ESLint Pro",
-      description: "Real-time linting and code quality checks for JavaScript and TypeScript.",
-      publisher: "System Admin",
-      installed: true,
-      category: "Linters",
-      version: "2.4.1",
-      icon: ShieldCheck,
-    },
-    {
-      id: "ai-debugger",
-      name: "Orbit AI Debugger",
-      description: "Advanced AI-powered debugger that finds logical errors and suggests fixes.",
-      publisher: "Orbit Core",
-      installed: false,
-      category: "AI Tools",
-      version: "1.0.5",
-      icon: Zap,
-    },
-    {
-      id: "prettier",
-      name: "Prettier - Formatter",
-      description: "Opinionated code formatter. Supports multiple languages.",
-      publisher: "Prettier",
-      installed: true,
-      category: "Formatters",
-      version: "3.2.0",
-      icon: Code,
-    },
-    {
-      id: "gitlens-mini",
-      name: "GitLens Mini",
-      description: "Visualize code authorship and history right inside the editor.",
-      publisher: "System Admin",
-      installed: false,
-      category: "Source Control",
-      version: "0.9.1",
-      icon: Puzzle,
+  
+  // Load persisted install state from localStorage
+  const getStoredInstallState = (): Record<string, boolean> => {
+    try {
+      const stored = localStorage.getItem('CODEORBIT_EXTENSIONS');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
     }
-  ]);
+  };
+
+  const [extensions, setExtensions] = useState<Extension[]>(() => {
+    const installState = getStoredInstallState();
+    return [
+      {
+        id: "code-linter",
+        name: "ESLint Pro",
+        description: "Real-time linting and code quality checks for JavaScript and TypeScript.",
+        publisher: "System Admin",
+        installed: installState["code-linter"] ?? true,
+        category: "Linters",
+        version: "2.4.1",
+        icon: ShieldCheck,
+      },
+      {
+        id: "ai-debugger",
+        name: "Orbit AI Debugger",
+        description: "Advanced AI-powered debugger that finds logical errors and suggests fixes.",
+        publisher: "Orbit Core",
+        installed: installState["ai-debugger"] ?? false,
+        category: "AI Tools",
+        version: "1.0.5",
+        icon: Zap,
+      },
+      {
+        id: "quick-format",
+        name: "Quick Format",
+        description: "Basic code formatting: trim whitespace, normalize indentation.",
+        publisher: "CodeOrbit",
+        installed: installState["quick-format"] ?? true,
+        category: "Formatters",
+        version: "1.0.0",
+        icon: Code,
+      },
+      {
+        id: "gitlens-mini",
+        name: "GitLens Mini",
+        description: "Visualize code authorship and history right inside the editor.",
+        publisher: "System Admin",
+        installed: installState["gitlens-mini"] ?? false,
+        category: "Source Control",
+        version: "0.9.1",
+        icon: Puzzle,
+      }
+    ];
+  });
 
   const toggleInstall = (id: string) => {
-    setExtensions(prev => prev.map(ext => {
-      if (ext.id === id) {
-        const newState = !ext.installed;
-        toast({
-          title: newState ? "Extension Installed" : "Extension Uninstalled",
-          description: `${ext.name} has been ${newState ? "added to" : "removed from"} your workspace.`,
-        });
-        return { ...ext, installed: newState };
-      }
-      return ext;
-    }));
+    setExtensions(prev => {
+      const next = prev.map(ext => {
+        if (ext.id === id) {
+          const newState = !ext.installed;
+          toast({
+            title: newState ? "Extension Installed" : "Extension Uninstalled",
+            description: `${ext.name} has been ${newState ? "added to" : "removed from"} your workspace.`,
+          });
+          return { ...ext, installed: newState };
+        }
+        return ext;
+      });
+      
+      // Persist install state to localStorage
+      const installState: Record<string, boolean> = {};
+      next.forEach(ext => { installState[ext.id] = ext.installed; });
+      localStorage.setItem('CODEORBIT_EXTENSIONS', JSON.stringify(installState));
+      
+      return next;
+    });
   };
 
   const filteredExtensions = extensions.filter(ext => 

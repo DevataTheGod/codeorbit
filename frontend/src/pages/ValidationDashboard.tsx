@@ -36,6 +36,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { ValidationComparison } from "@/components/ValidationComparison";
 
 const supabase = supabaseOriginal as any;
 
@@ -358,6 +359,15 @@ export const ValidationDashboard = () => {
   };
 
   const syncSimulationDataToSupabase = async () => {
+    if (!import.meta.env.DEV) {
+      toast({
+        title: "Action Restricted",
+        description: "Simulating and syncing matrix test cases to the database is only permitted in development mode.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       toast({
         title: "Syncing Test Cases",
@@ -499,14 +509,16 @@ export const ValidationDashboard = () => {
             </div>
 
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-primary/20 bg-primary/10 text-primary text-xs hover:bg-primary/20"
-                onClick={syncSimulationDataToSupabase}
-              >
-                Sync Sandbox to Supabase
-              </Button>
+              {import.meta.env.DEV && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-primary/20 bg-primary/10 text-primary text-xs hover:bg-primary/20"
+                  onClick={syncSimulationDataToSupabase}
+                >
+                  Sync Sandbox to Supabase
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
@@ -572,6 +584,9 @@ export const ValidationDashboard = () => {
                 </TabsTrigger>
                 <TabsTrigger value="leaderboard" className="data-[state=active]:bg-[#181E36] rounded-md text-xs px-3 py-1.5">
                   Leaderboard & Cohort Analytics
+                </TabsTrigger>
+                <TabsTrigger value="comparison" className="data-[state=active]:bg-[#181E36] rounded-md text-xs px-3 py-1.5">
+                  Mentor Comparison
                 </TabsTrigger>
               </TabsList>
 
@@ -842,6 +857,18 @@ export const ValidationDashboard = () => {
                   </Card>
                 </div>
               </div>
+            </TabsContent>
+
+            {/* TAB 3: Mentor Comparison */}
+            <TabsContent value="comparison" className="space-y-6">
+              <ValidationComparison
+                systemRankings={VALIDATION_MATRIX_STUDENTS.map((s, i) => ({
+                  name: s.fullName,
+                  score: s.overallScore,
+                  rank: i + 1,
+                  riskLevel: s.riskLevel,
+                }))}
+              />
             </TabsContent>
           </Tabs>
         </main>
