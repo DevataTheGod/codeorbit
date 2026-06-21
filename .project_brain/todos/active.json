@@ -53,5 +53,16 @@
     "depends_on": [],
     "description": "Install and configure Vitest or Jest, set up React Testing Library, and write initial test scripts to verify core components.",
     "created": "2026-06-21T14:18:28.537374"
+  },
+  {
+    "id": "TASK-0006",
+    "title": "Implement Validation Dashboard",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "high",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Create ValidationDashboard.tsx showing student cohort understanding scores, risk levels, paste flags, and reflection completion statistics, and secure it.",
+    "created": "2026-06-21T14:34:10.210746",
+    "completed": "2026-06-21T14:34:14.583478"
   }
 ]

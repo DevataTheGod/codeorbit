@@ -19,13 +19,13 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 | Architecture | 85/100 | ✅ Solid React + Supabase foundation |
 | Core Student Workflow | 75/100 | ✅ Implemented, VFS backed editor |
 | Orbit AI | 75/100 | ✅ Functional, Socratic prompts |
-| Understanding Verification | 65/100 | ✅ V1 Built, tracking score persist |
-| Mentor Experience | 55/100 | 🟡 Functional student overview |
-| Security | 70/100 | 🟡 Improved (JWT verify, active RLS fixes) |
+| Understanding Verification | 75/100 | ✅ V1 Built, Validation Dashboard complete |
+| Mentor Experience | 65/100 | 🟡 Improved (student details + validation matrix) |
+| Security | 80/100 | ✅ Hardened (JWT verify, route guards, RLS fixes) |
 | Testing | 25/100 | 🔴 Mostly Manual verification |
-| Production Readiness | 40/100 | 🔴 Not Yet ready for traffic |
+| Production Readiness | 65/100 | 🟡 Substantial progress toward pilot |
 
-**Overall Completion: ~65-70%**
+**Overall Completion: ~70-75%**
 
 ---
 
@@ -51,26 +51,25 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 - ✅ Reflection Challenge workflow (paste → challenge → score)
 - ✅ Mentor can see student scores
 - ✅ Risk level classification (mastery → critical)
+- ✅ Validation Dashboard implemented and secured (/validation route)
 
 ---
 
 ## What Is Missing
 
 ### Critical Gaps
-1. **No route-level auth protection** — anyone can visit /admin or /mentor URLs
-2. **Security vulnerabilities** — JWT disabled, RLS bypass, role escalation
-3. **No real-time updates** — all data is fetch-on-mount
-4. **localStorage dependency** — scores/telemetry lost across browsers
-5. **No Orbit interaction scoring** — only paste/typing tracked
-6. **No score timeline** — only current score, no history
-7. **No reflection history** — mentor can't see past challenges
-8. **No cohort analytics** — no batch-level insights
+1. **No real-time updates** — all data is fetch-on-mount
+2. **localStorage dependency** — editor files are stored locally (VFS)
+3. **No Orbit interaction scoring** — only paste/typing tracked
+4. **No score timeline** — only current score, no history
+5. **No reflection history** — mentor can't see past challenges
+6. **Testing setup missing** — manual validation only
 
 ### Feature Gaps
 - OTP verification commented out
 - GoogleAuthOTPService dead code
 - No pagination on any list
-- No tests
+- No automated unit/integration tests
 - No CI/CD
 
 ---
@@ -103,24 +102,25 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 Business Vision:      95%
 Engineering:          75%
 Product:              70%
-Validation:           30%
-Production Ready:     40%
-Overall SaaS:         ~65-70%
+Validation:           45%
+Production Ready:     65%
+Overall SaaS:         ~70-75%
 ```
 
 ---
 
-## Pilot Readiness: 40%
+## Pilot Readiness: 65%
 
 **Ready for**:
-- Internal testing
+- Internal testing & pilot simulations
 - Demo to potential partners
-- Technical validation
+- Validation checks via sandbox matrix
+- Secure routing flow checks
 
 **Not ready for**:
-- Real bootcamp deployment
 - Production traffic
 - Paid customers
+- Auto-regression checks
 
 ---
 

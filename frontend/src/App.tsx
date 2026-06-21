@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import Progress from "./pages/Progress";
+import ValidationDashboard from "./pages/ValidationDashboard";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import RoleProtectedRoute from "@/components/auth/RoleProtectedRoute";
 
@@ -46,6 +47,11 @@ const App = () => (
               </RoleProtectedRoute>
             } />
             <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
+            <Route path="/validation" element={
+              <RoleProtectedRoute allowedRoles={["mentor", "admin"]}>
+                <ValidationDashboard />
+              </RoleProtectedRoute>
+            } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
