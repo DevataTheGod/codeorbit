@@ -22,5 +22,16 @@
     "description": "Define forbidden and required technologies inside configuration.",
     "created": "2026-06-19T15:44:09.754911",
     "completed": "2026-06-21T14:16:56.098807"
+  },
+  {
+    "id": "TASK-0003",
+    "title": "Implement route-level auth protection",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "high",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Set up React Router route guards in the frontend to prevent unauthenticated access to student/mentor/admin dashboards and the IDE workspace.",
+    "created": "2026-06-21T14:18:23.186412",
+    "completed": "2026-06-21T14:31:42.658728"
   }
 ]

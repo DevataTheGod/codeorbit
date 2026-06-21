@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  role: "admin" | "mentor" | "student" | null;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -17,21 +18,65 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState<"admin" | "mentor" | "student" | null>(null);
 
   useEffect(() => {
-    // Set up auth state listener FIRST
+    const fetchUserRole = async (userId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", userId);
+
+        if (error) {
+          console.error("Error fetching user roles:", error);
+          setRole("student");
+          return;
+        }
+
+        const isAdmin = data?.some((r) => r.role === "admin");
+        const isMentor = data?.some((r) => r.role === "mentor");
+
+        if (isAdmin) {
+          setRole("admin");
+        } else if (isMentor) {
+          setRole("mentor");
+        } else {
+          setRole("student");
+        }
+      } catch (err) {
+        console.error("Failed to check user role:", err);
+        setRole("student");
+      }
+    };
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
-        setUser(session?.user ?? null);
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        
+        if (currentUser) {
+          setLoading(true);
+          await fetchUserRole(currentUser.id);
+        } else {
+          setRole(null);
+        }
         setLoading(false);
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Initial session check
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      
+      if (currentUser) {
+        await fetchUserRole(currentUser.id);
+      } else {
+        setRole(null);
+      }
       setLoading(false);
     });
 
@@ -70,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, role, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

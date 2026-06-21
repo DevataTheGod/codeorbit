@@ -4,7 +4,7 @@
     "description": "CodeOrbit is an enterprise-grade, project-based Educational Software-as-a-Service (SaaS) platform designed to act as a guided, hands-on engineering apprenticeship. It integrates a learning management dashboard, Socratic AI mentorship (Orbit), and an in-browser VS Code-like IDE to ensure students write every line of code themselves, avoiding the 'Tutorial Hell' and 'AI Copypasta' traps.",
     "version": "0.1.0",
     "created": "2026-06-19T15:44:09.753666",
-    "updated": "2026-06-21T14:18:28.538119",
+    "updated": "2026-06-21T14:31:42.664153",
     "current_phase": "Phase 2 - Security Hardening & Testing Setup"
   },
   "tech_stack": {
@@ -44,13 +44,6 @@
   },
   "key_files": [],
   "active_tasks": [
-    {
-      "id": "TASK-0003",
-      "description": "Implement route-level auth protection",
-      "status": "pending",
-      "phase": "Phase 2 - Security Hardening & Testing Setup",
-      "priority": "high"
-    },
     {
       "id": "TASK-0004",
       "description": "Harden API security and RLS policies",

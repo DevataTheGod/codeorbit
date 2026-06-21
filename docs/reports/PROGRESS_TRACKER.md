@@ -31,6 +31,7 @@
 - ✅ TypeScript compilation resolved (cast `supabase as any` to bypass incomplete local type generations)
 - ✅ Audited legacy codebase file structures (TASK-0001)
 - ✅ Configured project architecture rules (TASK-0002)
+- ✅ Route-level auth protection (TASK-0003)
 
 ### Documentation
 - ✅ Restructured and migrated legacy files (moved to docs/archive/)
@@ -49,7 +50,6 @@
 - 🟡 Mentor Dashboard (basic, needs v2)
 
 ### Engineering
-- 🟡 Route-level auth protection (TASK-0003)
 - 🟡 API security and RLS policies (JWT verify, CORS restriction) (TASK-0004)
 - 🟡 Configure unit and integration testing pipelines (TASK-0005)
 - 🟡 Real-time updates (not started)
@@ -91,10 +91,10 @@
 |----------|-----------|-------------|-------------|---|
 | Business | 6 | 0 | 0 | 100% |
 | Product | 5 | 3 | 5 | 38% |
-| Engineering | 13 | 3 | 17 | 39% |
+| Engineering | 14 | 2 | 17 | 42% |
 | Security & Testing | 0 | 2 | 2 | 0% |
 | Documentation | 9 | 0 | 0 | 100% |
-| **Total** | **33** | **8** | **24** | **50%** |
+| **Total** | **34** | **7** | **24** | **52%** |
 
 ---
 
