@@ -1,0 +1,84 @@
+{
+  "project": {
+    "name": "codeorbit",
+    "description": "CodeOrbit is an enterprise-grade, project-based Educational Software-as-a-Service (SaaS) platform designed to act as a guided, hands-on engineering apprenticeship. It integrates a learning management dashboard, Socratic AI mentorship (Orbit), and an in-browser VS Code-like IDE to ensure students write every line of code themselves, avoiding the 'Tutorial Hell' and 'AI Copypasta' traps.",
+    "version": "0.1.0",
+    "created": "2026-06-19T15:44:09.753666",
+    "updated": "2026-06-21T14:18:28.538119",
+    "current_phase": "Phase 2 - Security Hardening & Testing Setup"
+  },
+  "tech_stack": {
+    "languages": [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "frameworks": [
+      "Next.js",
+      "React",
+      "Vite"
+    ],
+    "databases": [
+      "Supabase (PostgreSQL)"
+    ],
+    "tools": [],
+    "infrastructure": []
+  },
+  "architecture": {
+    "overview": "",
+    "key_patterns": [],
+    "directory_structure": {},
+    "rules": {
+      "forbidden_technologies": [
+        "redux",
+        "firebase"
+      ],
+      "required_technologies": []
+    }
+  },
+  "conventions": {
+    "code_style": "",
+    "naming_conventions": "",
+    "git_workflow": "",
+    "testing_approach": "",
+    "commit_message_style": ""
+  },
+  "key_files": [],
+  "active_tasks": [
+    {
+      "id": "TASK-0003",
+      "description": "Implement route-level auth protection",
+      "status": "pending",
+      "phase": "Phase 2 - Security Hardening & Testing Setup",
+      "priority": "high"
+    },
+    {
+      "id": "TASK-0004",
+      "description": "Harden API security and RLS policies",
+      "status": "pending",
+      "phase": "Phase 2 - Security Hardening & Testing Setup",
+      "priority": "high"
+    },
+    {
+      "id": "TASK-0005",
+      "description": "Configure unit and integration testing",
+      "status": "pending",
+      "phase": "Phase 2 - Security Hardening & Testing Setup",
+      "priority": "medium"
+    }
+  ],
+  "goals": [],
+  "milestones": [],
+  "decisions": [
+    {
+      "date": "2026-06-21T14:17:05.046949",
+      "decision": "Phase completed: Phase 1 - Legacy Code Integration",
+      "reason": "Completed Phase 1. Cleaned up all duplicate functions/ directories and legacy documentation root files. Set up proper docs/ subdirectories. Verified typechecks and code compilation. Added robust error boundaries to the IDE workspace panel integrations."
+    }
+  ],
+  "open_design": {
+    "design_system": "",
+    "prototype_source": "",
+    "open_design_project": "",
+    "artifact_paths": []
+  }
+}

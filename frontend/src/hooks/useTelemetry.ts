@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { UnderstandingScoreService } from "@/services/UnderstandingScoreService";
 
 interface TelemetryData {
   keystrokeIntervals: number[];
@@ -7,9 +8,10 @@ interface TelemetryData {
   suspiciousActivity: boolean;
   warnings: string[];
   complexityScore: number;
+  reflectionTriggered: boolean;
 }
 
-export const useTelemetry = (code: string, filePath: string | null = null, skillScore: number = 5) => {
+export const useTelemetry = (code: string, filePath: string | null = null, skillScore: number = 5, userId?: string) => {
   const [telemetry, setTelemetry] = useState<TelemetryData>({
     keystrokeIntervals: [],
     pasteEvents: [],
@@ -17,6 +19,7 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
     suspiciousActivity: false,
     warnings: [],
     complexityScore: 0,
+    reflectionTriggered: false,
   });
   
   const lastKeyTime = useRef<number>(Date.now());
@@ -36,6 +39,7 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
         suspiciousActivity: false,
         warnings: [],
         complexityScore: 0,
+        reflectionTriggered: false,
       });
     }
   }, [filePath, code]);
@@ -60,6 +64,19 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
         newWarnings.push("Robotic typing detected");
       }
 
+      // Record typing event every 10 keystrokes (to avoid flooding)
+      if (prev.totalCharsTyped % 10 === 0 && userId) {
+        UnderstandingScoreService.recordEvent({
+          userId,
+          eventType: 'typing',
+          eventData: {
+            interval,
+            totalChars: prev.totalCharsTyped + 1,
+            filePath,
+          },
+        });
+      }
+
       return {
         ...prev,
         keystrokeIntervals: newIntervals,
@@ -68,11 +85,12 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
         warnings: newWarnings
       };
     });
-  }, []);
+  }, [userId, filePath]);
 
   const handlePaste = useCallback((e: ClipboardEvent) => {
     const pastedText = e.clipboardData?.getData("text") || "";
     const length = pastedText.length;
+    const lineCount = pastedText.split('\n').length;
     
     // Flag if pasting more than 50 characters at once
     if (length > 50) {
@@ -80,10 +98,25 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
         ...prev,
         pasteEvents: [...prev.pasteEvents, { timestamp: Date.now(), length }],
         suspiciousActivity: true,
-        warnings: [...prev.warnings, `Large code block pasted (${length} chars)`]
+        warnings: [...prev.warnings, `Large code block pasted (${length} chars)`],
+        reflectionTriggered: true,
       }));
+
+      // Record telemetry event to UnderstandingScoreService
+      if (userId) {
+        UnderstandingScoreService.recordEvent({
+          userId,
+          eventType: 'paste',
+          eventData: {
+            length,
+            lineCount,
+            filePath,
+            timestamp: Date.now(),
+          },
+        });
+      }
     }
-  }, []);
+  }, [userId, filePath]);
 
   useEffect(() => {
     // Basic complexity heuristic: unique keywords, nesting depth, and length
@@ -133,6 +166,7 @@ export const useTelemetry = (code: string, filePath: string | null = null, skill
       suspiciousActivity: false,
       warnings: [],
       complexityScore: 0,
+      reflectionTriggered: false,
     })
   };
 };

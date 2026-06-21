@@ -65,8 +65,13 @@
     /* IDE-specific tokens */
     --ide-bg: 240 10% 3%;
     --ide-sidebar: 240 10% 5%;
+    --ide-sidebar-hover: 240 10% 8%;
     --ide-editor: 240 10% 6%;
     --ide-terminal: 240 10% 4%;
+    --ide-tabs: 240 10% 7%;
+    --ide-activitybar: 240 10% 4%;
+    --ide-activitybar-active: 240 10% 10%;
+    --ide-activitybar-hover: 240 10% 8%;
     --ide-success: 142 76% 45%;
     --ide-error: 0 84% 60%;
     --ide-warning: 38 92% 50%;

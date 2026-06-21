@@ -186,7 +186,7 @@ const StudentDashboard = () => {
   const [profileRole, setProfileRole] = useState<string | null>(null);
   const [userPlan, setUserPlan] = useState<string>("free");
   const [mentorDialogOpen, setMentorDialogOpen] = useState(false);
-  const [mentorReports, setMentorReports] = useState<Array<Record<string, unknown>>>([]);
+  const [mentorReports, setMentorReports] = useState<any[]>([]);
   const [loadingMentorReports, setLoadingMentorReports] = useState(false);
 
   const toggleMentorAccess = async () => {
@@ -194,7 +194,7 @@ const StudentDashboard = () => {
     
     try {
       const newAccess = !currentSubmission.mentor_access;
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("project_submissions")
         .update({ mentor_access: newAccess })
         .eq("id", currentSubmission.id);
@@ -232,7 +232,7 @@ const StudentDashboard = () => {
       // fetch profile role and plan
       (async () => {
         try {
-          const { data, error } = await supabase
+          const { data, error } = await (supabase as any)
             .from("profiles")
             .select("role, plan")
             .eq("user_id", user.id)
@@ -253,14 +253,14 @@ const StudentDashboard = () => {
 
     try {
       // Fetch submissions
-      const { data: submissionsData, error: submissionsError } = await supabase
+      const { data: submissionsData, error: submissionsError } = await (supabase as any)
         .from("project_submissions")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
       if (submissionsError) throw submissionsError;
-      setSubmissions(submissionsData || []);
+      setSubmissions((submissionsData as any) || []);
 
       if (submissionsData && submissionsData.length > 0) {
         const submissionIds = submissionsData.map((s) => s.id);
@@ -316,7 +316,7 @@ const StudentDashboard = () => {
         setHelpRequests(helpData || []);
 
         // Fetch chatbot-generated mentor reports linked to student submissions
-        const { data: chatbotReportsData, error: chatbotReportsError } = await supabase
+        const { data: chatbotReportsData, error: chatbotReportsError } = await (supabase as any)
           .from("mentor_reports")
           .select("*")
           .in("submission_id", submissionIds)
@@ -769,7 +769,17 @@ const StudentDashboard = () => {
                     <HelpCircle className="w-5 h-5" />
                     <span>Request Help</span>
                   </Button>
-                  <Button variant="outline" className="h-auto py-4 flex-col gap-2">
+                  <Button
+                    variant="outline"
+                    className="h-auto py-4 flex-col gap-2"
+                    onClick={() => {
+                      toast({
+                        title: "Documentation",
+                        description: "Opening CodeOrbit platform documentation...",
+                      });
+                      window.open("https://github.com/DevataTheGod/codeorbit#readme", "_blank");
+                    }}
+                  >
                     <ExternalLink className="w-5 h-5" />
                     <span>View Docs</span>
                   </Button>
@@ -794,7 +804,29 @@ const StudentDashboard = () => {
                     Get direct feedback from industry mentors on your code. Subscribed users get detailed reviews 
                     and checkpoints to ensure project quality.
                   </p>
-                  <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                  <Button 
+                    className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                    onClick={async () => {
+                      try {
+                        const { error } = await (supabase as any)
+                          .from("profiles")
+                          .update({ plan: "pro" })
+                          .eq("user_id", user!.id);
+                        if (error) throw error;
+                        setUserPlan("pro");
+                        toast({
+                          title: "Upgraded successfully",
+                          description: "You now have access to Pro Builder features!",
+                        });
+                      } catch (err) {
+                        toast({
+                          title: "Upgrade failed",
+                          description: "Could not upgrade plan.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                  >
                     Upgrade to Pro Plan
                   </Button>
                 </div>
@@ -865,7 +897,30 @@ const StudentDashboard = () => {
                     Stuck on a tricky bug? Pro users can request help directly from our mentor team 
                     and get response within 4 hours.
                   </p>
-                  <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
+                   <Button 
+                    variant="outline" 
+                    className="border-accent text-accent hover:bg-accent/10"
+                    onClick={async () => {
+                      try {
+                        const { error } = await (supabase as any)
+                          .from("profiles")
+                          .update({ plan: "pro" })
+                          .eq("user_id", user!.id);
+                        if (error) throw error;
+                        setUserPlan("pro");
+                        toast({
+                          title: "Upgraded successfully",
+                          description: "You now have access to Pro Builder features!",
+                        });
+                      } catch (err) {
+                        toast({
+                          title: "Upgrade failed",
+                          description: "Could not upgrade plan.",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                  >
                     See Pro Features
                   </Button>
                 </div>
@@ -900,7 +955,7 @@ const StudentDashboard = () => {
           <div className="fixed bottom-24 right-6 z-50">
             <Button onClick={async () => {
               setMentorDialogOpen(true); setLoadingMentorReports(true); try {
-                const { data } = await supabase.from("mentor_reports").select("*").order("created_at", { ascending: false });
+                const { data } = await (supabase as any).from("mentor_reports").select("*").order("created_at", { ascending: false });
                 setMentorReports(data || []);
               } catch (err) {
                 console.error(err);

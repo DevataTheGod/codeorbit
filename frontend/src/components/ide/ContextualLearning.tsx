@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lightbulb, BookOpen, ExternalLink } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/dialog'; // Using Dialog components for styling if needed, but let's stick to a custom UI
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface LearningBite {
   keywords: string[];

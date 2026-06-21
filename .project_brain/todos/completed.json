@@ -1,0 +1,26 @@
+[
+  {
+    "id": "TASK-0001",
+    "title": "Audit legacy codebase file structures",
+    "phase": "Phase 1 - Legacy Code Integration",
+    "priority": "high",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Perform dependency scans and review codebase readiness score.",
+    "created": "2026-06-19T15:44:09.754902",
+    "completed": "2026-06-21T14:16:53.226482"
+  },
+  {
+    "id": "TASK-0002",
+    "title": "Configure project architecture rules",
+    "phase": "Phase 1 - Legacy Code Integration",
+    "priority": "medium",
+    "status": "completed",
+    "depends_on": [
+      "TASK-0001"
+    ],
+    "description": "Define forbidden and required technologies inside configuration.",
+    "created": "2026-06-19T15:44:09.754911",
+    "completed": "2026-06-21T14:16:56.098807"
+  }
+]

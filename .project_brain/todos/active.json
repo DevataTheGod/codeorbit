@@ -1,0 +1,56 @@
+[
+  {
+    "id": "TASK-0001",
+    "title": "Audit legacy codebase file structures",
+    "phase": "Phase 1 - Legacy Code Integration",
+    "priority": "high",
+    "status": "completed",
+    "depends_on": [],
+    "description": "Perform dependency scans and review codebase readiness score.",
+    "created": "2026-06-19T15:44:09.754902",
+    "completed": "2026-06-21T14:16:53.226482"
+  },
+  {
+    "id": "TASK-0002",
+    "title": "Configure project architecture rules",
+    "phase": "Phase 1 - Legacy Code Integration",
+    "priority": "medium",
+    "status": "completed",
+    "depends_on": [
+      "TASK-0001"
+    ],
+    "description": "Define forbidden and required technologies inside configuration.",
+    "created": "2026-06-19T15:44:09.754911",
+    "completed": "2026-06-21T14:16:56.098807"
+  },
+  {
+    "id": "TASK-0003",
+    "title": "Implement route-level auth protection",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "high",
+    "status": "pending",
+    "depends_on": [],
+    "description": "Set up React Router route guards in the frontend to prevent unauthenticated access to student/mentor/admin dashboards and the IDE workspace.",
+    "created": "2026-06-21T14:18:23.186412"
+  },
+  {
+    "id": "TASK-0004",
+    "title": "Harden API security and RLS policies",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "high",
+    "status": "pending",
+    "depends_on": [],
+    "description": "Ensure edge functions verify JWT tokens correctly, prevent client role escalation, and audit Supabase Row-Level Security (RLS) tables.",
+    "created": "2026-06-21T14:18:25.840382"
+  },
+  {
+    "id": "TASK-0005",
+    "title": "Configure unit and integration testing",
+    "phase": "Phase 2 - Security Hardening & Testing Setup",
+    "priority": "medium",
+    "status": "pending",
+    "depends_on": [],
+    "description": "Install and configure Vitest or Jest, set up React Testing Library, and write initial test scripts to verify core components.",
+    "created": "2026-06-21T14:18:28.537374"
+  }
+]

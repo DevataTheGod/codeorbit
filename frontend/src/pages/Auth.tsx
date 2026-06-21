@@ -34,11 +34,10 @@ const loginSchema = z.object({
 });
 
 const signupSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-  role: z.enum(["student", "mentor", "admin"]),
+  fullName: z.string().min(2, "Full name is required"),
+  confirmPassword: z.string().min(6, "Password confirmation must be at least 6 characters"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -75,7 +74,6 @@ const Auth = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      role: "student",
     },
   });
 
@@ -138,8 +136,7 @@ const Auth = () => {
       const { error } = await signUp(
         data.email,
         data.password,
-        data.fullName,
-        data.role
+        data.fullName
       );
 
       if (error) {
@@ -404,44 +401,6 @@ const Auth = () => {
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={signupForm.control}
-                        name="role"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Role</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select your role" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="student">
-                                  <div className="flex items-center gap-2">
-                                    <User className="w-4 h-4" />
-                                    Student
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="mentor">
-                                  <div className="flex items-center gap-2">
-                                    <GraduationCap className="w-4 h-4" />
-                                    Mentor
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="admin">
-                                  <div className="flex items-center gap-2">
-                                    <Crown className="w-4 h-4" />
-                                    Admin
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}

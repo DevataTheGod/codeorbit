@@ -1,149 +1,146 @@
-# 🎓 CodeOrbit
+# CodeOrbit
 
-> **"Stay in orbit. Master the code."**
-
-CodeOrbit is an enterprise-grade, project-based educational SaaS platform. It combines a learning management dashboard, Socratic AI mentorship (Orbit), and an in-browser VS Code-like IDE to ensure students write every line of code themselves.
+Learning Infrastructure Platform for Bootcamps
 
 ---
 
-## ✨ Core Features
+## Why CodeOrbit Exists
 
-| Feature | Description |
-|---|---|
-| **Browser IDE** | Monaco Editor with file tree, tabs, terminal, breadcrumbs, and status bar |
-| **Orbit AI (Socratic)** | Side-panel AI that asks questions, never writes code |
-| **Cheat Detection** | Paste event monitoring and keystroke telemetry |
-| **Proof-of-Work Quiz** | Oral code defense modal triggered by suspicious paste activity |
-| **AI Milestone Generator** | Gemini auto-generates a project roadmap from a student's intake form |
-| **Mentor Reports** | AI-generated progress summaries for human mentor review |
+The AI era broke learning verification.
+
+Bootcamps cannot verify whether students truly understand their work. ChatGPT, Copilot, and Cursor enable fake project completion. Mentors cannot scale beyond 20 students.
+
+CodeOrbit exists to solve this.
 
 ---
 
-## 🛠️ Tech Stack
+## Mission
+
+Develop and verify independent software engineers at scale.
+
+---
+
+## Core Problem
+
+| Problem | Impact |
+|---------|--------|
+| Understanding unverifiable | 4-12 week gap between submission and interview |
+| AI making assessment worse | Fake project completion, false confidence |
+| Mentors don't scale | 20 sustainable, 50 difficult, 100+ impossible |
+
+---
+
+## Core Customer
+
+Bootcamps (50-200 students/cohort)
+
+---
+
+## Primary Users
+
+Students and Mentors
+
+---
+
+## Platform Components
+
+1. **Understanding Score System** — Verify comprehension at scale
+2. **Orbit Socratic AI Mentor** — Never writes code, always teaches
+3. **Mentor Dashboard** — Scale mentorship to 100+ students
+4. **Project Roadmap Generator** — AI-powered milestone creation
+5. **Telemetry Engine** — Detect AI-assisted learning
+6. **Browser IDE** — Supporting infrastructure (not the moat)
+
+---
+
+## The Moat
+
+Pedagogy + Telemetry + Mentor Intelligence + Understanding Verification
+
+---
+
+## Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Frontend | React 18 + TypeScript + Vite 5 + Tailwind CSS + shadcn/ui |
-| Editor | Monaco Editor (`@monaco-editor/react`) |
-| Auth + DB | Supabase (PostgreSQL + JWT + Row-Level Security) |
-| Edge Functions | Supabase Deno (Gemini-2.5-Flash) |
-| Backend | Node.js / Express (OTP micro-server) |
-| Email | Resend |
+|-------|------------|
+| Frontend | React 18 + TypeScript + Vite + Tailwind + Monaco |
+| Backend | Supabase (PostgreSQL + RLS + Edge Functions) |
+| Edge Functions | Deno (Gemini 2.5 Flash via Lovable AI gateway) |
+| OTP Service | Express.js (port 8787, Resend email) |
 
 ---
 
-## 📁 Project Structure
+## Quick Start
 
-```
-codeorbit/
-├── frontend/                   # React SPA (Vite)
-│   └── src/
-│       ├── pages/              # Route-level page components
-│       ├── components/ide/     # VS Code-like IDE components
-│       ├── hooks/              # Auth, telemetry, file system hooks
-│       └── services/           # Supabase, GitHub, OTP, VFS services
-├── backend/                    # Express OTP microservice
-├── functions/                  # Supabase Deno Edge Functions
-│   ├── bodhit-chat/            # Orbit AI Socratic chat
-│   └── generate-milestones/    # AI roadmap generator
-├── database/
-│   ├── schema/                 # Full PostgreSQL schema
-│   ├── migrations/             # Supabase migration history
-│   └── setup/                  # Trigger scripts and patch helpers
-├── docs/                       # Developer documentation
-├── scripts/                    # Deployment shell scripts
-├── tests/                      # Chatbot simulation tests
-└── config/                     # Env templates
-```
-
----
-
-## ⚙️ Quick Start
-
-### 1. Install dependencies
 ```bash
+# Install dependencies
 npm install
-```
 
-### 2. Set environment variables
-```bash
+# Set up environment
 cp config/.env.example .env
-# Fill in values — see docs/ENVIRONMENT_VARIABLES.md
-```
 
-### 3. Set up the database
-Run in Supabase SQL Editor (in order):
-1. `database/schema/COMPLETE_DATABASE_SCHEMA.sql`
-2. `database/setup/CREATE_USER_TRIGGER.sql`
-
-See [DATABASE_SETUP_GUIDE.md](database/DATABASE_SETUP_GUIDE.md) for details.
-
-### 4. Run locally (two terminals)
-```bash
+# Run development
 npm run dev          # Frontend → http://localhost:8080
-npm run otp-server   # Express OTP server → http://localhost:8787
+npm run otp-server   # OTP Server → http://localhost:8787
 ```
 
----
-
-## 👥 User Roles
-
-| Role | Capabilities |
-|---|---|
-| **Student** | Submit project → Get AI roadmap → Code in IDE → AI assessment |
-| **Mentor** | Review students, grade AI reports, respond to help flags |
-| **Admin** | Manage roles, view platform analytics |
+See [docs/engineering/development/LOCAL_SETUP.md](docs/engineering/development/LOCAL_SETUP.md) for full setup.
 
 ---
 
-## 🔌 API Reference
+## Architecture Overview
 
-| Endpoint | Service | Description |
-|---|---|---|
-| `GET /` | Express | Health check |
-| `POST /send-otp` | Express | OTP delivery via Resend |
-| `POST /functions/v1/bodhit-chat` | Deno | Orbit AI Socratic chat |
-| `POST /functions/v1/generate-milestones` | Deno | AI roadmap generation |
-
-See [docs/api/API_REFERENCE.md](docs/api/API_REFERENCE.md) for full schemas.
+See [docs/engineering/architecture/CURRENT_ARCHITECTURE.md](docs/engineering/architecture/CURRENT_ARCHITECTURE.md) for the actual deployed architecture.
 
 ---
 
-## 📚 Documentation Index
+## Documentation Index
 
-| Document | Location |
-|---|---|
-| System Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
-| Database Architecture | [docs/DATABASE_ARCHITECTURE.md](docs/DATABASE_ARCHITECTURE.md) |
-| Database Setup | [database/DATABASE_SETUP_GUIDE.md](database/DATABASE_SETUP_GUIDE.md) |
-| Environment Variables | [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) |
-| Authentication Flows | [docs/AUTHENTICATION.md](docs/AUTHENTICATION.md) |
-| Feature Walkthroughs | [docs/FEATURE_DOCUMENTATION.md](docs/FEATURE_DOCUMENTATION.md) |
-| Local Development | [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) |
-| Deployment Guide | [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) |
-| Security | [docs/SECURITY.md](docs/SECURITY.md) |
-| Troubleshooting | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) |
-| OTP & Google Auth | [docs/integrations/GOOGLE_AUTH_OTP_SETUP.md](docs/integrations/GOOGLE_AUTH_OTP_SETUP.md) |
-| Conversation Persistence | [docs/development/CONVERSATION_PERSISTENCE_GUIDE.md](docs/development/CONVERSATION_PERSISTENCE_GUIDE.md) |
-| REST API Reference | [docs/api/API_REFERENCE.md](docs/api/API_REFERENCE.md) |
-| Edge Function Reference | [docs/api/EDGE_FUNCTION_REFERENCE.md](docs/api/EDGE_FUNCTION_REFERENCE.md) |
+### Context (Start Here)
+- [Master Context](docs/context/MASTER_CONTEXT.md) — Single source of truth
+- [Business Context](docs/context/BUSINESS_CONTEXT.md) — Business model, customer, revenue
+- [Technical Context](docs/context/TECHNICAL_CONTEXT.md) — Architecture, stack, deployment
 
----
+### Strategy
+- [Founder Thesis](docs/strategy/FOUNDER_THESIS.md) — Why CodeOrbit exists
+- [Business Strategy](docs/strategy/BUSINESS_STRATEGY.md) — Business strategy
+- [GTM Execution](docs/strategy/GTM_EXECUTION.md) — Go-to-market plan
 
-## 🚀 Deployment
+### Product
+- [Product Decision Framework](docs/product/PRODUCT_DECISION_FRAMEWORK.md) — Feature decision filter
+- [Product North Star](docs/product/PRODUCT_NORTH_STAR.md) — Mission, metrics, priorities
+- [Product Spec](docs/product/PRODUCT_SPEC.md) — Product requirements
 
-Host the frontend on **Vercel/Netlify**, the Express server on **Render/Fly.io**, and the database/Edge Functions on **Supabase**.
+### Engineering
+- [Current Architecture](docs/engineering/architecture/CURRENT_ARCHITECTURE.md) — Actual architecture
+- [API Reference](docs/engineering/api/API_REFERENCE.md) — API documentation
+- [Database Reference](docs/engineering/architecture/DATABASE_ARCHITECTURE.md) — Database schema and RLS design
 
-See [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) for step-by-step instructions.
-
----
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for coding guidelines and branch conventions.
+### AI
+- [AI Agent Rules](docs/ai/AI_AGENT_RULES.md) — Rules for AI agents
+- [Orbit AI System](docs/context/AI_CONTEXT.md) — Socratic AI system design
+- [Prompts Reference](docs/context/AI_CONTEXT.md#prompt-architecture) — AI prompt inventory and mandates
 
 ---
 
-## 📄 License
+## Product Priorities
 
-MIT — see [LICENSE](LICENSE).
+1. Understanding Score
+2. Reflection Challenges
+3. Mentor Dashboard
+4. Orbit Mentor
+5. Roadmaps
+6. Telemetry
+7. IDE
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for coding guidelines.
+
+---
+
+## License
+
+MIT

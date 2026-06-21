@@ -1,0 +1,6 @@
+project_type: legacy
+language: JavaScript
+framework: Next.js
+readiness_threshold: 80
+verification_threshold: 85
+auto_sync: true

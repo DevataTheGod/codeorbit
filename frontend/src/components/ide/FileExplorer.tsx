@@ -55,7 +55,10 @@ const TreeNode = ({
         style={{ paddingLeft: `${depth * 12 + 8}px` }}
       >
         <button
-          className="mr-1 text-muted-foreground hover:text-foreground"
+          className={cn(
+            "mr-1 text-muted-foreground hover:text-foreground transition-opacity",
+            selectedPaths.has(node.path) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+          )}
           onClick={(e) => {
             e.stopPropagation();
             toggleNodeSelection(node.path, !selectedPaths.has(node.path));

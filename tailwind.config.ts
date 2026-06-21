@@ -81,8 +81,13 @@ export default {
         ide: {
           bg: "hsl(var(--ide-bg))",
           sidebar: "hsl(var(--ide-sidebar))",
+          "sidebar-hover": "hsl(var(--ide-sidebar-hover))",
           editor: "hsl(var(--ide-editor))",
           terminal: "hsl(var(--ide-terminal))",
+          tabs: "hsl(var(--ide-tabs))",
+          activitybar: "hsl(var(--ide-activitybar))",
+          "activitybar-active": "hsl(var(--ide-activitybar-active))",
+          "activitybar-hover": "hsl(var(--ide-activitybar-hover))",
           success: "hsl(var(--ide-success))",
           error: "hsl(var(--ide-error))",
           warning: "hsl(var(--ide-warning))",

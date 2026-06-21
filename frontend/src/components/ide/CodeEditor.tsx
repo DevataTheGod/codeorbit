@@ -9,6 +9,7 @@ interface CodeEditorProps {
   code: string;
   onChange: (value: string | undefined) => void;
   onCursorChange?: (line: number, column: number) => void;
+  onLargePaste?: (pastedText: string) => void;
 }
 
 const getLanguage = (path: string | null): string => {
@@ -22,7 +23,7 @@ const getLanguage = (path: string | null): string => {
   return "typescript";
 };
 
-const CodeEditor = ({ selectedFile, code, onChange, onCursorChange }: CodeEditorProps) => {
+const CodeEditor = ({ selectedFile, code, onChange, onCursorChange, onLargePaste }: CodeEditorProps) => {
   const { toast } = useToast();
   const { telemetry, logKeystroke } = useTelemetry(code, selectedFile);
 
@@ -67,11 +68,33 @@ const CodeEditor = ({ selectedFile, code, onChange, onCursorChange }: CodeEditor
                     onCursorChange(e.position.lineNumber, e.position.column);
                   }
                 });
+
+                // Detect large pastes via Monaco's content change
+                let previousContent = editor.getValue();
+                editor.onDidChangeModelContent(() => {
+                  const newContent = editor.getValue();
+                  const addedLines = newContent.split('\n').length - previousContent.split('\n').length;
+                  
+                  // If content grew by >20 lines in one change, it's likely a paste
+                  if (addedLines > 20 && onLargePaste) {
+                    // Extract the added content
+                    const oldLines = previousContent.split('\n');
+                    const newLines = newContent.split('\n');
+                    const addedContent = newLines.slice(oldLines.length - 1).join('\n');
+                    onLargePaste(addedContent);
+                  }
+                  
+                  previousContent = newContent;
+                });
               }}
               theme="vs-dark"
               loading={
-                <div className="flex items-center justify-center h-full">
-                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                <div className="flex flex-col items-center justify-center h-full gap-3">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                  <div className="text-center">
+                    <p className="text-sm font-medium">Loading Editor</p>
+                    <p className="text-xs text-muted-foreground">Initializing Monaco Editor...</p>
+                  </div>
                 </div>
               }
               options={{

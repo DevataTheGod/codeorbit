@@ -186,7 +186,7 @@ console.log("=".repeat(80));
 console.log();
 
 const simulateFlow = () => {
-  console.log("🤖 BODHIT: Welcome! Please provide your intake fields:");
+  console.log("🤖 Orbit: Welcome! Please provide your intake fields:");
   console.log("   Project idea: ...");
   console.log("   Tech stack: ...");
   console.log("   Skill level: ...");
@@ -202,7 +202,7 @@ Timeline: 3 weeks`;
   console.log();
 
   const parsed = parseIntakeFromText(userIntake);
-  console.log("🤖 BODHIT: Parsed intake as:");
+  console.log("🤖 Orbit: Parsed intake as:");
   console.log(`   Project idea: ${parsed!.projectIdea}`);
   console.log(`   Tech stack: ${parsed!.techStack}`);
   console.log(`   Skill level: ${parsed!.skillLevel}`);
@@ -214,7 +214,7 @@ Timeline: 3 weeks`;
   console.log("👤 STUDENT:", confirmation);
   console.log();
 
-  console.log("🤖 BODHIT: Intake confirmed! Creating milestones...");
+  console.log("🤖 Orbit: Intake confirmed! Creating milestones...");
   console.log("   Milestone 1: Project Setup & Planning");
   console.log("   Milestone 2: REST API Core Routes");
   console.log("   Milestone 3: Database Schema & Models");
@@ -230,7 +230,7 @@ Timeline: 3 weeks`;
   console.log();
 
   if (detectCodeRequest(studentRequest)) {
-    console.log("🤖 BODHIT: I cannot provide code. Describe your intended approach and I will guide the logic, tests, and structure.");
+    console.log("🤖 Orbit: I cannot provide code. Describe your intended approach and I will guide the logic, tests, and structure.");
     console.log();
   }
 
@@ -268,7 +268,7 @@ This is important because it affects the folder structure you'll create.
 }
 \`\`\``;
 
-  console.log("🤖 BODHIT:", assistantResponseWithReport.slice(0, 300) + "...\n");
+  console.log("🤖 Orbit:", assistantResponseWithReport.slice(0, 300) + "...\n");
 
   const report = extractMentorReport(assistantResponseWithReport);
   console.log("📊 MENTOR REPORT EXTRACTED:");

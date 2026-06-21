@@ -24,6 +24,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { UnderstandingScoreWidget } from "@/components/UnderstandingScoreWidget";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -192,14 +193,14 @@ const MentorDashboard = () => {
   const fetchMentorData = async () => {
     try {
       // Fetch all submissions that have mentor access enabled
-      const { data: submissionsData, error: submissionsError } = await supabase
+      const { data: submissionsData, error: submissionsError } = await (supabase as any)
         .from("project_submissions")
         .select("*")
         .eq("mentor_access", true)
         .order("created_at", { ascending: false });
 
       if (submissionsError) throw submissionsError;
-      setSubmissions(submissionsData || []);
+      setSubmissions((submissionsData as any) || []);
 
       // Fetch all milestones with tasks
       if (submissionsData && submissionsData.length > 0) {
@@ -510,6 +511,30 @@ const MentorDashboard = () => {
   const activeSubmissions = submissions.filter((s) => s.status === "in_progress" || s.status === "approved");
   const openHelpRequests = helpRequests.filter((h) => h.status === "open");
 
+  // Calculate cohort understanding stats
+  const cohortStats = (() => {
+    const scores = activeSubmissions.map(s => {
+      // Try to get score from localStorage
+      try {
+        const raw = localStorage.getItem('CODEORBIT_UNDERSTANDING_SCORES');
+        if (raw) {
+          const scores = JSON.parse(raw);
+          const score = scores.find((sc: any) => sc.userId === s.user_id && sc.submissionId === s.id);
+          return score?.overall || null;
+        }
+      } catch {}
+      return null;
+    }).filter(s => s !== null);
+
+    if (scores.length === 0) return null;
+
+    const avg = scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
+    const atRisk = scores.filter((s: number) => s < 60).length;
+    const struggling = scores.filter((s: number) => s < 40).length;
+
+    return { average: Math.round(avg), total: scores.length, atRisk, struggling };
+  })();
+
   return (
     <>
       <Helmet>
@@ -575,6 +600,18 @@ const MentorDashboard = () => {
               </div>
               <span className="text-2xl font-bold">{submissions.length}</span>
             </div>
+            {cohortStats && (
+              <div className="bg-card border border-border rounded-xl p-4">
+                <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                  <Target className="w-4 h-4" />
+                  <span className="text-sm">Avg Understanding</span>
+                </div>
+                <span className="text-2xl font-bold">{cohortStats.average}%</span>
+                {cohortStats.atRisk > 0 && (
+                  <p className="text-xs text-orange-600 mt-1">{cohortStats.atRisk} at risk</p>
+                )}
+              </div>
+            )}
           </div>
 
           <Tabs defaultValue="submissions" className="space-y-6">
@@ -695,6 +732,13 @@ const MentorDashboard = () => {
 
                       {selectedSubmission === sub.id && (
                         <div className="border-t border-border p-6 space-y-4">
+                          {/* Understanding Score Widget */}
+                          <UnderstandingScoreWidget
+                            userId={sub.user_id || ''}
+                            submissionId={sub.id}
+                            showDetails={true}
+                          />
+
                           <div className="flex justify-between items-center">
                             <h4 className="font-medium">Milestones</h4>
                             <div className="flex gap-2">

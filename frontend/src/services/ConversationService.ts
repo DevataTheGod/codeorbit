@@ -1,4 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase as supabaseOriginal } from "@/integrations/supabase/client";
+const supabase = supabaseOriginal as any;
 
 export interface ConversationMessage {
   id: string;

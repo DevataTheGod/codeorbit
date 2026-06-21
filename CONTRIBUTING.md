@@ -15,7 +15,7 @@ Thank you for choosing to contribute to CodeOrbit! Follow these guidelines to en
    ```bash
    cp config/.env.example .env
    ```
-4. Run the frontend client and backend OTP servers concurrently (see [LOCAL_DEVELOPMENT.md](file:///home/dev/Desktop/projects/codeorbit/docs/LOCAL_DEVELOPMENT.md)).
+4. Run the frontend client and backend OTP servers concurrently (see [LOCAL_SETUP.md](file:///home/dev/Desktop/projects/codeorbit/docs/engineering/development/LOCAL_SETUP.md)).
 5. Code updates should be fully typed and adhere to naming guidelines.
 
 ---

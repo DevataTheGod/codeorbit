@@ -1,6 +1,5 @@
 import { X, FileCode, FileJson, FileText, File } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface FileTabsProps {
   openFiles: string[];
@@ -29,51 +28,48 @@ const getFileName = (path: string) => {
 const FileTabs = ({ openFiles, activeFile, onFileSelect, onFileClose }: FileTabsProps) => {
   if (openFiles.length === 0) {
     return (
-      <div className="h-9 bg-[#252526] border-b border-[#1e1e1e] flex items-center px-4">
+      <div className="h-10 bg-background border-b border-border flex items-center px-4">
         <span className="text-xs text-muted-foreground">No open files</span>
       </div>
     );
   }
 
   return (
-    <div className="h-9 bg-[#252526] flex items-center overflow-x-auto border-b border-[#1e1e1e]">
-      <ScrollArea className="flex-1 h-full">
-        <div className="flex h-full">
-          {openFiles.map((file) => {
-            const FileIcon = getFileIcon(file);
-            const isActive = file === activeFile;
+    <div className="h-10 bg-background flex items-center border-b border-border overflow-x-auto">
+      <div className="flex h-full">
+        {openFiles.map((file) => {
+          const FileIcon = getFileIcon(file);
+          const isActive = file === activeFile;
 
-            return (
-              <div
-                key={file}
+          return (
+            <div
+              key={file}
+              className={cn(
+                "flex items-center gap-2 px-3 h-full min-w-[120px] max-w-[200px] cursor-pointer border-r border-border group",
+                isActive
+                  ? "bg-background text-foreground"
+                  : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
+              )}
+              onClick={() => onFileSelect(file)}
+            >
+              <FileIcon className="w-4 h-4 flex-shrink-0" />
+              <span className="text-xs truncate flex-1">{getFileName(file)}</span>
+              <button
                 className={cn(
-                  "flex items-center gap-2 px-3 h-full min-w-[120px] max-w-[200px] cursor-pointer border-r border-[#1e1e1e] group",
-                  isActive
-                    ? "bg-[#1e1e1e] text-white"
-                    : "bg-[#2d2d2d] text-[#969696] hover:bg-[#2a2d2d]"
+                  "w-5 h-5 flex items-center justify-center rounded hover:bg-muted opacity-0 group-hover:opacity-100 transition-opacity",
+                  isActive ? "text-foreground" : "text-muted-foreground"
                 )}
-                onClick={() => onFileSelect(file)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onFileClose(file);
+                }}
               >
-                <FileIcon className="w-4 h-4 flex-shrink-0" />
-                <span className="text-xs truncate flex-1">{getFileName(file)}</span>
-                <button
-                  className={cn(
-                    "w-4 h-4 flex items-center justify-center rounded hover:bg-[#3c3c3c]",
-                    isActive ? "text-white" : "text-[#969696]"
-                  )}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onFileClose(file);
-                  }}
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <ScrollBar orientation="horizontal" className="h-1" />
-      </ScrollArea>
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

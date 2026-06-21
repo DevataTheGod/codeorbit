@@ -1,8 +1,7 @@
-project_id = "bckbynydehipoidngdxt"
+project_id = "izizkajledltehunohfm"
 
-[functions.bodhit-chat]
-verify_jwt = false
+[functions.orbit-chat]
+verify_jwt = true
 
 [functions.generate-milestones]
-verify_jwt = false
-
+verify_jwt = true

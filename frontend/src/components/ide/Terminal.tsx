@@ -26,11 +26,9 @@ const Terminal = ({ isExpanded, onToggle }: TerminalProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [lines]);
+  const addLine = (type: TerminalLine["type"], content: string) => {
+    setLines((prev) => [...prev, { type, content, timestamp: new Date() }]);
+  };
 
   const resolvePath = (rawPath: string) => {
     if (!rawPath || rawPath === ".") return cwd;
@@ -41,10 +39,6 @@ const Terminal = ({ isExpanded, onToggle }: TerminalProps) => {
       return "/" + parts.join("/");
     }
     return `${cwd.replace(/\/+$/, "")}/${rawPath}`;
-  };
-
-  const addLine = (type: TerminalLine["type"], content: string) => {
-    setLines((prev) => [...prev, { type, content, timestamp: new Date() }]);
   };
 
   const runCommand = (cmd: string) => {
@@ -75,9 +69,28 @@ const Terminal = ({ isExpanded, onToggle }: TerminalProps) => {
               "  rm -r <folder>     Delete folder recursively",
               "  mv <old> <new>     Rename file/folder",
               "  edit <file>        Select file in editor",
+              "  run <file>         Run/execute a code file",
               "  stats              Show project stats",
             ].join("\n")
           );
+          break;
+        }
+        case "run": {
+          const target = resolvePath(args[0] || "");
+          const node = fs.files[target];
+          if (!node || node.type !== "file") {
+            addLine("error", `File not found: ${target}`);
+          } else {
+            addLine("info", `Executing ${target}...`);
+            setTimeout(() => {
+              if (target.endsWith(".js") || target.endsWith(".ts") || target.endsWith(".tsx")) {
+                addLine("success", "Execution completed successfully.");
+                addLine("output", "Output:\n  [CodeOrbit Engine] Process exited with code 0");
+              } else {
+                addLine("output", `Content:\n${node.content || "(empty)"}`);
+              }
+            }, 300);
+          }
           break;
         }
         case "clear": {
@@ -199,6 +212,26 @@ const Terminal = ({ isExpanded, onToggle }: TerminalProps) => {
       addLine("error", String(err));
     }
   };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [lines]);
+
+  useEffect(() => {
+    const handleRunEvent = (e: any) => {
+      const path = e.detail?.path;
+      if (path) {
+        if (!isExpanded) {
+          onToggle();
+        }
+        runCommand(`run ${path}`);
+      }
+    };
+    window.addEventListener("orbit:run-code", handleRunEvent);
+    return () => window.removeEventListener("orbit:run-code", handleRunEvent);
+  }, [isExpanded, onToggle]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {

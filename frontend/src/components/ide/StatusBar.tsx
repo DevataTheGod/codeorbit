@@ -1,5 +1,4 @@
-import { GitBranch, Circle, FileCode, AlertCircle, CheckCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { GitBranch, AlertCircle, CheckCircle } from "lucide-react";
 
 interface StatusBarProps {
   language?: string;
@@ -8,8 +7,9 @@ interface StatusBarProps {
   branch?: string;
   hasErrors?: boolean;
   hasWarnings?: boolean;
-  userPlan?: string;
   onSubmitClick?: () => void;
+  onBranchClick?: () => void;
+  onFormatClick?: () => void;
 }
 
 const StatusBar = ({ 
@@ -19,64 +19,46 @@ const StatusBar = ({
   branch = "main",
   hasErrors = false,
   hasWarnings = false,
-  userPlan = "free",
-  onSubmitClick
+  onBranchClick,
+  onFormatClick,
 }: StatusBarProps) => {
   return (
-    <div className="h-6 bg-[#007acc] text-white flex items-center justify-between px-3 text-xs">
+    <div className="h-6 bg-background border-t border-border text-muted-foreground flex items-center justify-between px-3 text-[11px] shrink-0">
       {/* Left section */}
       <div className="flex items-center gap-4">
-        {/* Branch */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
-          <GitBranch className="w-3.5 h-3.5" />
+        <div 
+          className="flex items-center gap-1.5 hover:bg-muted px-2 py-0.5 rounded cursor-pointer"
+          onClick={onBranchClick}
+        >
+          <GitBranch className="w-3.5 h-3.5 text-green-500" />
           <span>{branch}</span>
         </div>
 
-        {/* Sync status */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
+        <div className="flex items-center gap-1.5">
           {hasErrors ? (
-            <AlertCircle className="w-3.5 h-3.5 text-red-300" />
+            <AlertCircle className="w-3.5 h-3.5 text-red-500" />
           ) : hasWarnings ? (
-            <AlertCircle className="w-3.5 h-3.5 text-yellow-300" />
+            <AlertCircle className="w-3.5 h-3.5 text-yellow-500" />
           ) : (
-            <CheckCircle className="w-3.5 h-3.5" />
+            <CheckCircle className="w-3.5 h-3.5 text-green-500" />
           )}
-          <span>{hasErrors ? "0" : hasWarnings ? "0" : "0"} problems</span>
+          <span>{hasErrors ? "1 problem" : hasWarnings ? "1 warning" : "0 problems"}</span>
         </div>
-
-        {/* Submit Button */}
-        {onSubmitClick && (
-          <button 
-            onClick={onSubmitClick}
-            className="flex items-center gap-1.5 bg-accent/20 hover:bg-accent/40 px-3 py-0.5 rounded transition-colors text-accent-foreground border border-accent/30 font-bold ml-4"
-          >
-            <CheckCircle className="w-3.5 h-3.5" />
-            <span>SUBMIT FOR REVIEW</span>
-          </button>
-        )}
       </div>
 
       {/* Right section */}
       <div className="flex items-center gap-4">
-        {/* Language */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
-          <FileCode className="w-3.5 h-3.5" />
-          <span>{language}</span>
-        </div>
-
-        {/* Line/Column */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
-          <span>Ln {line}, Col {column}</span>
-        </div>
-
-        {/* Encoding */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
-          <span>UTF-8</span>
-        </div>
-
-        {/* Indentation */}
-        <div className="flex items-center gap-1 hover:bg-white/10 px-2 py-0.5 rounded cursor-pointer">
-          <span>Spaces: 2</span>
+        <span>Ln {line}, Col {column}</span>
+        <span>Spaces: 2</span>
+        <span>UTF-8</span>
+        <span>{language}</span>
+        <div 
+          className="flex items-center gap-1.5 text-green-500 hover:bg-muted px-2 py-0.5 rounded cursor-pointer"
+          onClick={onFormatClick}
+          title="Format Document (Prettier)"
+        >
+          <CheckCircle className="w-3.5 h-3.5" />
+          <span>Prettier</span>
         </div>
       </div>
     </div>
