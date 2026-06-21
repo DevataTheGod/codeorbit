@@ -108,25 +108,21 @@
 - Database migration
 - Supabase persistence
 
-### Next 7 Days
-- Fix critical security issues
-- Run end-to-end test
-- Validate understanding score workflow
+### Next 7 Days (Security Hardening & Initial Validation)
+- Implement Route-level Auth Guards (protect `/admin`, `/mentor`, `/student`, `/ide`, `/submit-project`, `/progress`)
+- Verify Edge function JWT authorization is enforced
 
-### Next 30 Days
-- Orbit interaction scoring
-- Score timeline
-- Real-time updates
-- Security hardening
+### Next 14 Days (Validation & Testing Setup)
+- Execute validation matrix for Student A, B, C, D, E and compare heuristics
+- Request mentor ranking verification for score feedback accuracy
+- Install Vitest and React Testing Library for frontend testing
 
-### Next 60 Days
-- Mentor Dashboard v2
-- Cohort analytics
-- Multi-tenant support
-- Unit tests
+### Next 30 Days (Real-time & Moat Expansion)
+- Add Orbit interaction and reasoning scoring
+- Integrate Supabase Realtime subscriptions for status updates
+- Implement historical score timeline database tables
 
-### Next 90 Days
-- Mobile responsive
-- Certification system
-- API for integrations
-- CI/CD pipeline
+### Next 60-90 Days (Scaling & API)
+- Mentor Dashboard v2 (reflection history, score trends)
+- Multi-tenant support & curriculum analytics
+- Certification system & API for bootcamp integrations

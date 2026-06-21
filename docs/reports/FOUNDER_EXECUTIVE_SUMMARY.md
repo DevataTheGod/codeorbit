@@ -14,17 +14,18 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 
 | Layer | Score | Status |
 |-------|-------|--------|
-| Vision | 95/100 | Clear, documented, aligned |
-| Documentation | 90/100 | Comprehensive, organized |
-| Architecture | 80/100 | Supabase + Vite, clean |
-| Product | 55/100 | Core workflow exists, gaps remain |
-| Security | 45/100 | Critical issues need fixing |
-| AI Systems | 65/100 | Orbit works, scoring is basic |
-| Mentor Features | 40/100 | Dashboard exists, lacks depth |
-| Student Features | 50/100 | IDE + chat working |
-| Scalability | 35/100 | localStorage, no real-time |
+| Vision & Positioning | 95/100 | ✅ Strong, clear problem moat |
+| Documentation | 95/100 | ✅ Mature, fully synchronized |
+| Architecture | 85/100 | ✅ Solid React + Supabase foundation |
+| Core Student Workflow | 75/100 | ✅ Implemented, VFS backed editor |
+| Orbit AI | 75/100 | ✅ Functional, Socratic prompts |
+| Understanding Verification | 65/100 | ✅ V1 Built, tracking score persist |
+| Mentor Experience | 55/100 | 🟡 Functional student overview |
+| Security | 70/100 | 🟡 Improved (JWT verify, active RLS fixes) |
+| Testing | 25/100 | 🔴 Mostly Manual verification |
+| Production Readiness | 40/100 | 🔴 Not Yet ready for traffic |
 
-**Overall Completion: 57%**
+**Overall Completion: ~65-70%**
 
 ---
 
@@ -98,15 +99,14 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 
 ## True Completion %
 
-| Category | % |
-|----------|---|
-| Business | 70% |
-| Product | 55% |
-| Engineering | 60% |
-| AI Systems | 65% |
-| Security | 45% |
-| Operations | 50% |
-| **Overall** | **57%** |
+```text
+Business Vision:      95%
+Engineering:          75%
+Product:              70%
+Validation:           30%
+Production Ready:     40%
+Overall SaaS:         ~65-70%
+```
 
 ---
 
@@ -139,24 +139,17 @@ CodeOrbit is a **Learning Infrastructure Platform** for bootcamps that measures 
 
 ## What To Build Next (Priority Order)
 
-### Immediate (This Week)
-1. **Fix critical security issues** — JWT, RLS, role escalation
-2. **Run end-to-end test** — verify understanding score workflow
+### Priority 1: Finish Route-Level Auth Guards (This Week)
+- Protect client routes: `/admin`, `/mentor`, `/student`, `/ide`, `/submit-project`, `/progress` from unauthenticated users.
 
-### Next 30 Days
-3. **Orbit interaction scoring** — questions asked, reasoning shown
-4. **Score timeline** — historical understanding scores
-5. **Real-time updates** — Supabase Realtime subscriptions
+### Priority 2: Execute Validation Matrix
+- Test and compare score behavior across Student A (strong), Student B (copy-paste), Student C (mixed), Student D (attempt bypass), Student E (power user).
 
-### Next 60 Days
-6. **Mentor Dashboard v2** — reflection history, score trends
-7. **Cohort analytics** — batch-level insights
-8. **Multi-tenant support** — bootcamp isolation
+### Priority 3: Mentor Verification
+- Get 1–2 mentors to review student rankings and scores without showing the system logic to confirm score accuracy.
 
-### Next 90 Days
-9. **Certification system** — verified completion
-10. **API for integrations** — LMS, ATS connectors
-11. **Mobile responsive** — mentor dashboard on phone
+### Priority 4: Set Up Testing Infrastructure
+- Integrate Vitest and React Testing Library, write core unit and integration verification tests.
 
 ---
 
